@@ -4,7 +4,6 @@ from typing import List, Dict, Any
 
 import pinecone
 import openai
-from sentence_transformers import SentenceTransformer
 
 # Load the large system prompt from an external file for readability
 with open("system_prompt.txt", "r") as f:
@@ -17,11 +16,14 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "YOUR_OPENAI_API_KEY")
 openai.api_key = OPENAI_API_KEY
 pinecone.init(api_key=PINECONE_API_KEY, environment=PINECONE_ENV)
 
-MODEL_NAME = "all-MiniLM-L6-v2"
-model = SentenceTransformer(MODEL_NAME)
+EMBEDDING_MODEL = "text-embedding-3-small"
+
+def embed(text: str) -> List[float]:
+    resp = openai.Embedding.create(model=EMBEDDING_MODEL, input=text)
+    return resp["data"][0]["embedding"]
 
 INDEX_NAME = "benchmark-index"
-DIMENSION = 384
+DIMENSION = 1536
 if INDEX_NAME not in pinecone.list_indexes():
     pinecone.create_index(INDEX_NAME, dimension=DIMENSION)
 index = pinecone.Index(INDEX_NAME)
@@ -33,7 +35,7 @@ with open("benchmarks.json", "r") as f:
 def upsert_data():
     items = []
     for bench in DATA:
-        vec = model.encode(bench["name"]).tolist()
+        vec = embed(bench["name"])
         items.append((bench["name"], vec, bench))
     for i in range(0, len(items), 100):
         index.upsert(items[i:i+100])
@@ -50,7 +52,7 @@ def get_benchmark(name: str) -> Dict[str, Any] | None:
 
 
 def search_benchmarks(query: str, top_k: int = 3) -> List[Dict[str, Any]]:
-    vec = model.encode(query).tolist()
+    vec = embed(query)
     res = index.query(vec, top_k=top_k, include_metadata=True)
     results = []
     for match in res.matches:

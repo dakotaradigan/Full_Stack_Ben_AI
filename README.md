@@ -4,7 +4,7 @@
 
 Install dependencies:
 ```bash
-pip install pinecone-client sentence-transformers openai
+pip install pinecone-client openai
 ```
 
 Run the chatbot:
