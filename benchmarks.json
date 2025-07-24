@@ -1,0 +1,99 @@
+{
+  "benchmarks": [
+    {
+      "name": "S&P 500",
+      "account_minimum": 250000,
+      "tags": {
+        "region": ["US"],
+        "asset_class": ["Equity"],
+        "style": ["Large Cap", "Blend"],
+        "factor_tilts": [],
+        "esg": false,
+        "weighting_method": "Market Cap",
+        "sector_focus": ["Broad Market"]
+      },
+      "fundamentals": {
+        "num_constituents": 500,
+        "rebalance_frequency": "Quarterly",
+        "rebalance_dates": ["March", "June", "September", "December"],
+        "pe_ratio": 22.1
+      }
+    },
+    {
+      "name": "MSCI EAFE",
+      "account_minimum": 250000,
+      "tags": {
+        "region": ["International Developed"],
+        "asset_class": ["Equity"],
+        "style": ["All Cap", "Blend"],
+        "factor_tilts": [],
+        "esg": false,
+        "weighting_method": "Market Cap",
+        "sector_focus": ["Broad Market"]
+      },
+      "fundamentals": {
+        "num_constituents": 826,
+        "rebalance_frequency": "Quarterly",
+        "rebalance_dates": ["February", "May", "August", "November"],
+        "pe_ratio": 15.8
+      }
+    },
+    {
+      "name": "MSCI ACWI",
+      "account_minimum": 600000,
+      "tags": {
+        "region": ["Global"],
+        "asset_class": ["Equity"],
+        "style": ["All Cap", "Blend"],
+        "factor_tilts": [],
+        "esg": false,
+        "weighting_method": "Market Cap",
+        "sector_focus": ["Broad Market"]
+      },
+      "fundamentals": {
+        "num_constituents": 2887,
+        "rebalance_frequency": "Quarterly",
+        "rebalance_dates": ["February", "May", "August", "November"],
+        "pe_ratio": 19.8
+      }
+    },
+    {
+      "name": "ESG Domestic",
+      "account_minimum": 250000,
+      "tags": {
+        "region": ["US"],
+        "asset_class": ["Equity"],
+        "style": ["All Cap", "Blend"],
+        "factor_tilts": [],
+        "esg": true,
+        "weighting_method": "ESG-Weighted",
+        "sector_focus": ["Broad Market"]
+      },
+      "fundamentals": {
+        "num_constituents": 800,
+        "rebalance_frequency": "Quarterly",
+        "rebalance_dates": ["March", "June", "September", "December"],
+        "pe_ratio": 21.8
+      }
+    },
+    {
+      "name": "ESG International",
+      "account_minimum": 250000,
+      "tags": {
+        "region": ["International Developed"],
+        "asset_class": ["Equity"],
+        "style": ["All Cap", "Blend"],
+        "factor_tilts": [],
+        "esg": true,
+        "weighting_method": "ESG-Weighted",
+        "sector_focus": ["Broad Market"]
+      },
+      "fundamentals": {
+        "num_constituents": 600,
+        "rebalance_frequency": "Quarterly",
+        "rebalance_dates": ["February", "May", "August", "November"],
+        "pe_ratio": 16.9
+      }
+    }
+  ]
+}
