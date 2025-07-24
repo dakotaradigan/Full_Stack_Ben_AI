@@ -23,25 +23,14 @@ def embed(text: str) -> List[float]:
     return resp["data"][0]["embedding"]
 
 INDEX_NAME = "benchmark-index"
-DIMENSION = 1536
 if INDEX_NAME not in pinecone.list_indexes():
-    pinecone.create_index(INDEX_NAME, dimension=DIMENSION)
+    raise ValueError(
+        f"Pinecone index '{INDEX_NAME}' does not exist. Run build_index.py first."
+    )
 index = pinecone.Index(INDEX_NAME)
 
 with open("benchmarks.json", "r") as f:
     DATA = json.load(f)["benchmarks"]
-
-
-def upsert_data():
-    items = []
-    for bench in DATA:
-        vec = embed(bench["name"])
-        items.append((bench["name"], vec, bench))
-    for i in range(0, len(items), 100):
-        index.upsert(items[i:i+100])
-
-if not index.describe_index_stats().get("total_vector_count"):
-    upsert_data()
 
 
 def get_benchmark(name: str) -> Dict[str, Any] | None:
