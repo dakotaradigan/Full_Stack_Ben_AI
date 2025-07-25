@@ -19,4 +19,7 @@ After the index is built, start the chatbot:
 python chatbot.py
 ```
 
+`search_benchmarks` accepts an optional `filters` dictionary to narrow results
+by metadata fields (e.g. `{ "region": "US", "pe_ratio": {"$gt": 20} }`).
+
 Set the following environment variables before running either script: `PINECONE_API_KEY`, `PINECONE_ENV`, and `OPENAI_API_KEY`.

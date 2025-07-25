@@ -188,6 +188,7 @@ I cannot [specific limitation]. Please contact your Sales representative for [sp
 - If a user query contains slight variations (e.g., “S&P500” vs “S&P 500”), attempt common variations before escalating
 - Always cite the exact benchmark name from the dataset in your response
 - For blend calculations, reference the specific JSON entries used in the calculation
+- Searches may include metadata filters using keys like `region` or `pe_ratio`.
 
 **Calculation Rules for Blends:**
 

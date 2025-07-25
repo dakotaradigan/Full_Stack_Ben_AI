@@ -59,9 +59,28 @@ def get_benchmark(name: str) -> Dict[str, Any] | None:
     return BENCHMARK_MAP.get(name.lower())
 
 
-def search_benchmarks(query: str, top_k: int = 3) -> List[Dict[str, Any]]:
+def search_benchmarks(
+    query: str,
+    top_k: int = 3,
+    filters: Dict[str, Any] | None = None,
+) -> List[Dict[str, Any]]:
     vec = embed(query)
-    res = index.query(vector=vec, top_k=top_k, include_metadata=True)
+
+    pinecone_filter: Dict[str, Any] | None = None
+    if filters:
+        pinecone_filter = {}
+        for key, value in filters.items():
+            if isinstance(value, dict) and any(k.startswith("$") for k in value):
+                pinecone_filter[key] = value
+            else:
+                pinecone_filter[key] = {"$eq": value}
+
+    res = index.query(
+        vector=vec,
+        top_k=top_k,
+        include_metadata=True,
+        **({"filter": pinecone_filter} if pinecone_filter else {}),
+    )
     results = []
     for match in res.matches:
         bench = match.metadata
@@ -117,6 +136,10 @@ FUNCTIONS = [
             "properties": {
                 "query": {"type": "string"},
                 "top_k": {"type": "integer", "default": 3},
+                "filters": {
+                    "type": "object",
+                    "description": "Optional metadata filters. Example: {\"pe_ratio\": {\"$gt\": 20}, \"region\": \"US\"}",
+                },
             },
             "required": ["query"],
         },
@@ -156,7 +179,13 @@ FUNCTIONS = [
 
 def call_function(name: str, arguments: Dict[str, Any]) -> Dict[str, Any]:
     if name == "search_benchmarks":
-        return {"results": search_benchmarks(**arguments)}
+        return {
+            "results": search_benchmarks(
+                query=arguments.get("query", ""),
+                top_k=arguments.get("top_k", 3),
+                filters=arguments.get("filters"),
+            )
+        }
     if name == "get_minimum":
         return get_minimum(**arguments)
     if name == "blend_minimum":
