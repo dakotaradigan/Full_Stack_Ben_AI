@@ -12,7 +12,7 @@ PINECONE_ENV = os.getenv("PINECONE_ENV", "YOUR_PINECONE_ENV")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "YOUR_OPENAI_API_KEY")
 
 client = OpenAI(api_key=OPENAI_API_KEY)
-pc = Pinecone(api_key=PINECONE_API_KEY)
+pc = Pinecone(api_key=PINECONE_API_KEY, environment=PINECONE_ENV)
 
 INDEX_NAME = "benchmark-index"
 DIMENSION = 1536
