@@ -13,10 +13,466 @@
         "sector_focus": ["Broad Market"]
       },
       "fundamentals": {
-        "num_constituents": 500,
+        "num_constituents": 503,
         "rebalance_frequency": "Quarterly",
         "rebalance_dates": ["March", "June", "September", "December"],
         "pe_ratio": 22.1
+      }
+    },
+    {
+      "name": "S&P 1500",
+      "account_minimum": 250000,
+      "tags": {
+        "region": ["US"],
+        "asset_class": ["Equity"],
+        "style": ["All Cap", "Blend"],
+        "factor_tilts": [],
+        "esg": false,
+        "weighting_method": "Market Cap",
+        "sector_focus": ["Broad Market"]
+      },
+      "fundamentals": {
+        "num_constituents": 1500,
+        "rebalance_frequency": "Quarterly",
+        "rebalance_dates": ["March", "June", "September", "December"],
+        "pe_ratio": 21.8
+      }
+    },
+    {
+      "name": "ESG Domestic",
+      "account_minimum": 250000,
+      "tags": {
+        "region": ["US"],
+        "asset_class": ["Equity"],
+        "style": ["All Cap", "Blend"],
+        "factor_tilts": [],
+        "esg": true,
+        "weighting_method": "ESG-Weighted",
+        "sector_focus": ["Broad Market"]
+      },
+      "fundamentals": {
+        "num_constituents": 800,
+        "rebalance_frequency": "Quarterly",
+        "rebalance_dates": ["March", "June", "September", "December"],
+        "pe_ratio": 21.8
+      }
+    },
+    {
+      "name": "ESG International",
+      "account_minimum": 250000,
+      "tags": {
+        "region": ["International Developed"],
+        "asset_class": ["Equity"],
+        "style": ["All Cap", "Blend"],
+        "factor_tilts": [],
+        "esg": true,
+        "weighting_method": "ESG-Weighted",
+        "sector_focus": ["Broad Market"]
+      },
+      "fundamentals": {
+        "num_constituents": 600,
+        "rebalance_frequency": "Quarterly",
+        "rebalance_dates": ["February", "May", "August", "November"],
+        "pe_ratio": 16.9
+      }
+    },
+    {
+      "name": "Fossil Free Reserves Domestic",
+      "account_minimum": 250000,
+      "tags": {
+        "region": ["US"],
+        "asset_class": ["Equity"],
+        "style": ["All Cap", "Blend"],
+        "factor_tilts": [],
+        "esg": true,
+        "weighting_method": "Market Cap",
+        "sector_focus": ["Broad Market"]
+      },
+      "fundamentals": {
+        "num_constituents": 750,
+        "rebalance_frequency": "Quarterly",
+        "rebalance_dates": ["March", "June", "September", "December"],
+        "pe_ratio": 23.2
+      }
+    },
+    {
+      "name": "Fossil Free Reserves International",
+      "account_minimum": 250000,
+      "tags": {
+        "region": ["International Developed"],
+        "asset_class": ["Equity"],
+        "style": ["All Cap", "Blend"],
+        "factor_tilts": [],
+        "esg": true,
+        "weighting_method": "Market Cap",
+        "sector_focus": ["Broad Market"]
+      },
+      "fundamentals": {
+        "num_constituents": 550,
+        "rebalance_frequency": "Quarterly",
+        "rebalance_dates": ["February", "May", "August", "November"],
+        "pe_ratio": 17.1
+      }
+    },
+    {
+      "name": "Jewish Values Domestic",
+      "account_minimum": 250000,
+      "tags": {
+        "region": ["US"],
+        "asset_class": ["Equity"],
+        "style": ["All Cap", "Blend"],
+        "factor_tilts": [],
+        "esg": true,
+        "weighting_method": "Values-Based",
+        "sector_focus": ["Broad Market"]
+      },
+      "fundamentals": {
+        "num_constituents": 400,
+        "rebalance_frequency": "Quarterly",
+        "rebalance_dates": ["March", "June", "September", "December"],
+        "pe_ratio": 21.5
+      }
+    },
+    {
+      "name": "RC Catholic Values Domestic",
+      "account_minimum": 250000,
+      "tags": {
+        "region": ["US"],
+        "asset_class": ["Equity"],
+        "style": ["All Cap", "Blend"],
+        "factor_tilts": [],
+        "esg": true,
+        "weighting_method": "Values-Based",
+        "sector_focus": ["Broad Market"]
+      },
+      "fundamentals": {
+        "num_constituents": 450,
+        "rebalance_frequency": "Quarterly",
+        "rebalance_dates": ["March", "June", "September", "December"],
+        "pe_ratio": 20.8
+      }
+    },
+    {
+      "name": "FT V Catholic Values International",
+      "account_minimum": 250000,
+      "tags": {
+        "region": ["International Developed"],
+        "asset_class": ["Equity"],
+        "style": ["All Cap", "Blend"],
+        "factor_tilts": [],
+        "esg": true,
+        "weighting_method": "Values-Based",
+        "sector_focus": ["Broad Market"]
+      },
+      "fundamentals": {
+        "num_constituents": 350,
+        "rebalance_frequency": "Quarterly",
+        "rebalance_dates": ["February", "May", "August", "November"],
+        "pe_ratio": 16.2
+      }
+    },
+    {
+      "name": "Clean Technology Domestic",
+      "account_minimum": 250000,
+      "tags": {
+        "region": ["US"],
+        "asset_class": ["Equity"],
+        "style": ["All Cap", "Growth"],
+        "factor_tilts": ["Growth"],
+        "esg": true,
+        "weighting_method": "Thematic",
+        "sector_focus": ["Clean Technology"]
+      },
+      "fundamentals": {
+        "num_constituents": 150,
+        "rebalance_frequency": "Quarterly",
+        "rebalance_dates": ["March", "June", "September", "December"],
+        "pe_ratio": 26.4
+      }
+    },
+    {
+      "name": "Clean Technology International",
+      "account_minimum": 250000,
+      "tags": {
+        "region": ["International Developed"],
+        "asset_class": ["Equity"],
+        "style": ["All Cap", "Growth"],
+        "factor_tilts": ["Growth"],
+        "esg": true,
+        "weighting_method": "Thematic",
+        "sector_focus": ["Clean Technology"]
+      },
+      "fundamentals": {
+        "num_constituents": 120,
+        "rebalance_frequency": "Quarterly",
+        "rebalance_dates": ["February", "May", "August", "November"],
+        "pe_ratio": 24.1
+      }
+    },
+    {
+      "name": "Calvert US Large Cap Core Responsible",
+      "account_minimum": 250000,
+      "tags": {
+        "region": ["US"],
+        "asset_class": ["Equity"],
+        "style": ["Large Cap", "Blend"],
+        "factor_tilts": [],
+        "esg": true,
+        "weighting_method": "ESG-Weighted",
+        "sector_focus": ["Broad Market"]
+      },
+      "fundamentals": {
+        "num_constituents": 300,
+        "rebalance_frequency": "Quarterly",
+        "rebalance_dates": ["March", "June", "September", "December"],
+        "pe_ratio": 22.3
+      }
+    },
+    {
+      "name": "Calvert US Large Cap Growth Responsible",
+      "account_minimum": 250000,
+      "tags": {
+        "region": ["US"],
+        "asset_class": ["Equity"],
+        "style": ["Large Cap", "Growth"],
+        "factor_tilts": ["Growth"],
+        "esg": true,
+        "weighting_method": "ESG-Weighted",
+        "sector_focus": ["Broad Market"]
+      },
+      "fundamentals": {
+        "num_constituents": 200,
+        "rebalance_frequency": "Quarterly",
+        "rebalance_dates": ["March", "June", "September", "December"],
+        "pe_ratio": 28.1
+      }
+    },
+    {
+      "name": "Calvert US Large Cap Value Responsible",
+      "account_minimum": 250000,
+      "tags": {
+        "region": ["US"],
+        "asset_class": ["Equity"],
+        "style": ["Large Cap", "Value"],
+        "factor_tilts": ["Value"],
+        "esg": true,
+        "weighting_method": "ESG-Weighted",
+        "sector_focus": ["Broad Market"]
+      },
+      "fundamentals": {
+        "num_constituents": 200,
+        "rebalance_frequency": "Quarterly",
+        "rebalance_dates": ["March", "June", "September", "December"],
+        "pe_ratio": 17.9
+      }
+    },
+    {
+      "name": "Calvert US Mid Cap Core Responsible",
+      "account_minimum": 250000,
+      "tags": {
+        "region": ["US"],
+        "asset_class": ["Equity"],
+        "style": ["Mid Cap", "Blend"],
+        "factor_tilts": [],
+        "esg": true,
+        "weighting_method": "ESG-Weighted",
+        "sector_focus": ["Broad Market"]
+      },
+      "fundamentals": {
+        "num_constituents": 250,
+        "rebalance_frequency": "Quarterly",
+        "rebalance_dates": ["March", "June", "September", "December"],
+        "pe_ratio": 19.4
+      }
+    },
+    {
+      "name": "MSCI KLD 400 Social",
+      "account_minimum": 250000,
+      "tags": {
+        "region": ["US"],
+        "asset_class": ["Equity"],
+        "style": ["Large Cap", "Blend"],
+        "factor_tilts": [],
+        "esg": true,
+        "weighting_method": "ESG-Weighted",
+        "sector_focus": ["Broad Market"]
+      },
+      "fundamentals": {
+        "num_constituents": 400,
+        "rebalance_frequency": "Quarterly",
+        "rebalance_dates": ["February", "May", "August", "November"],
+        "pe_ratio": 21.7
+      }
+    },
+    {
+      "name": "MSCI USA Catholic Values",
+      "account_minimum": 250000,
+      "tags": {
+        "region": ["US"],
+        "asset_class": ["Equity"],
+        "style": ["All Cap", "Blend"],
+        "factor_tilts": [],
+        "esg": true,
+        "weighting_method": "Values-Based",
+        "sector_focus": ["Broad Market"]
+      },
+      "fundamentals": {
+        "num_constituents": 500,
+        "rebalance_frequency": "Quarterly",
+        "rebalance_dates": ["February", "May", "August", "November"],
+        "pe_ratio": 20.9
+      }
+    },
+    {
+      "name": "MSCI USA Selection Index",
+      "account_minimum": 250000,
+      "tags": {
+        "region": ["US"],
+        "asset_class": ["Equity"],
+        "style": ["All Cap", "Blend"],
+        "factor_tilts": [],
+        "esg": true,
+        "weighting_method": "ESG-Weighted",
+        "sector_focus": ["Broad Market"]
+      },
+      "fundamentals": {
+        "num_constituents": 600,
+        "rebalance_frequency": "Quarterly",
+        "rebalance_dates": ["February", "May", "August", "November"],
+        "pe_ratio": 21.4
+      }
+    },
+    {
+      "name": "Calvert International Responsible",
+      "account_minimum": 250000,
+      "tags": {
+        "region": ["International Developed"],
+        "asset_class": ["Equity"],
+        "style": ["All Cap", "Blend"],
+        "factor_tilts": [],
+        "esg": true,
+        "weighting_method": "ESG-Weighted",
+        "sector_focus": ["Broad Market"]
+      },
+      "fundamentals": {
+        "num_constituents": 400,
+        "rebalance_frequency": "Quarterly",
+        "rebalance_dates": ["February", "May", "August", "November"],
+        "pe_ratio": 16.8
+      }
+    },
+    {
+      "name": "MSCI ACWI Selection Index",
+      "account_minimum": 500000,
+      "tags": {
+        "region": ["Global"],
+        "asset_class": ["Equity"],
+        "style": ["All Cap", "Blend"],
+        "factor_tilts": [],
+        "esg": true,
+        "weighting_method": "ESG-Weighted",
+        "sector_focus": ["Broad Market"]
+      },
+      "fundamentals": {
+        "num_constituents": 800,
+        "rebalance_frequency": "Quarterly",
+        "rebalance_dates": ["February", "May", "August", "November"],
+        "pe_ratio": 19.6
+      }
+    },
+    {
+      "name": "MSCI EAFE Selection Index",
+      "account_minimum": 250000,
+      "tags": {
+        "region": ["International Developed"],
+        "asset_class": ["Equity"],
+        "style": ["All Cap", "Blend"],
+        "factor_tilts": [],
+        "esg": true,
+        "weighting_method": "ESG-Weighted",
+        "sector_focus": ["Broad Market"]
+      },
+      "fundamentals": {
+        "num_constituents": 400,
+        "rebalance_frequency": "Quarterly",
+        "rebalance_dates": ["February", "May", "August", "November"],
+        "pe_ratio": 16.5
+      }
+    },
+    {
+      "name": "MSCI World ESG Index",
+      "account_minimum": 450000,
+      "tags": {
+        "region": ["Global"],
+        "asset_class": ["Equity"],
+        "style": ["All Cap", "Blend"],
+        "factor_tilts": [],
+        "esg": true,
+        "weighting_method": "ESG-Weighted",
+        "sector_focus": ["Broad Market"]
+      },
+      "fundamentals": {
+        "num_constituents": 600,
+        "rebalance_frequency": "Quarterly",
+        "rebalance_dates": ["February", "May", "August", "November"],
+        "pe_ratio": 19.2
+      }
+    },
+    {
+      "name": "MSCI World ex USA Selection Index",
+      "account_minimum": 250000,
+      "tags": {
+        "region": ["International Developed"],
+        "asset_class": ["Equity"],
+        "style": ["All Cap", "Blend"],
+        "factor_tilts": [],
+        "esg": true,
+        "weighting_method": "ESG-Weighted",
+        "sector_focus": ["Broad Market"]
+      },
+      "fundamentals": {
+        "num_constituents": 500,
+        "rebalance_frequency": "Quarterly",
+        "rebalance_dates": ["February", "May", "August", "November"],
+        "pe_ratio": 16.7
+      }
+    },
+    {
+      "name": "S&P MidCap 400",
+      "account_minimum": 250000,
+      "tags": {
+        "region": ["US"],
+        "asset_class": ["Equity"],
+        "style": ["Mid Cap", "Blend"],
+        "factor_tilts": [],
+        "esg": false,
+        "weighting_method": "Market Cap",
+        "sector_focus": ["Broad Market"]
+      },
+      "fundamentals": {
+        "num_constituents": 400,
+        "rebalance_frequency": "Quarterly",
+        "rebalance_dates": ["February", "May", "August", "November"],
+        "pe_ratio": 14.2
+      }
+    },
+    {
+      "name": "Russell 2000",
+      "account_minimum": 2000000,
+      "tags": {
+        "region": ["US"],
+        "asset_class": ["Equity"],
+        "style": ["Small Cap", "Blend"],
+        "factor_tilts": [],
+        "esg": false,
+        "weighting_method": "Market Cap",
+        "sector_focus": ["Broad Market"]
+      },
+      "fundamentals": {
+        "num_constituents": 2000,
+        "rebalance_frequency": "Annually",
+        "rebalance_dates": ["June"],
+        "pe_ratio": 19.2
       }
     },
     {
@@ -58,41 +514,22 @@
       }
     },
     {
-      "name": "ESG Domestic",
+      "name": "Nasdaq 100",
       "account_minimum": 250000,
       "tags": {
         "region": ["US"],
         "asset_class": ["Equity"],
-        "style": ["All Cap", "Blend"],
-        "factor_tilts": [],
-        "esg": true,
-        "weighting_method": "ESG-Weighted",
-        "sector_focus": ["Broad Market"]
+        "style": ["Large Cap", "Growth"],
+        "factor_tilts": ["Growth"],
+        "esg": false,
+        "weighting_method": "Modified Market Cap",
+        "sector_focus": ["Technology"]
       },
       "fundamentals": {
-        "num_constituents": 800,
+        "num_constituents": 100,
         "rebalance_frequency": "Quarterly",
         "rebalance_dates": ["March", "June", "September", "December"],
-        "pe_ratio": 21.8
-      }
-    },
-    {
-      "name": "ESG International",
-      "account_minimum": 250000,
-      "tags": {
-        "region": ["International Developed"],
-        "asset_class": ["Equity"],
-        "style": ["All Cap", "Blend"],
-        "factor_tilts": [],
-        "esg": true,
-        "weighting_method": "ESG-Weighted",
-        "sector_focus": ["Broad Market"]
-      },
-      "fundamentals": {
-        "num_constituents": 600,
-        "rebalance_frequency": "Quarterly",
-        "rebalance_dates": ["February", "May", "August", "November"],
-        "pe_ratio": 16.9
+        "pe_ratio": 28.4
       }
     }
   ]
