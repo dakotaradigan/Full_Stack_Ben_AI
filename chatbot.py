@@ -2,7 +2,7 @@ import json
 import os
 from typing import List, Dict, Any
 
-import pinecone
+from pinecone import Pinecone
 import openai
 
 # Load the large system prompt from an external file for readability
@@ -14,7 +14,7 @@ PINECONE_ENV = os.getenv("PINECONE_ENV", "YOUR_PINECONE_ENV")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "YOUR_OPENAI_API_KEY")
 
 openai.api_key = OPENAI_API_KEY
-pinecone.init(api_key=PINECONE_API_KEY, environment=PINECONE_ENV)
+pc = Pinecone(api_key=PINECONE_API_KEY, environment=PINECONE_ENV)
 
 EMBEDDING_MODEL = "text-embedding-3-small"
 
@@ -23,11 +23,11 @@ def embed(text: str) -> List[float]:
     return resp["data"][0]["embedding"]
 
 INDEX_NAME = "benchmark-index"
-if INDEX_NAME not in pinecone.list_indexes():
+if INDEX_NAME not in pc.list_indexes().names():
     raise ValueError(
         f"Pinecone index '{INDEX_NAME}' does not exist. Run build_index.py first."
     )
-index = pinecone.Index(INDEX_NAME)
+index = pc.Index(INDEX_NAME)
 
 with open("benchmarks.json", "r") as f:
     DATA = json.load(f)["benchmarks"]
@@ -42,7 +42,7 @@ def get_benchmark(name: str) -> Dict[str, Any] | None:
 
 def search_benchmarks(query: str, top_k: int = 3) -> List[Dict[str, Any]]:
     vec = embed(query)
-    res = index.query(vec, top_k=top_k, include_metadata=True)
+    res = index.query(vector=vec, top_k=top_k, include_metadata=True)
     results = []
     for match in res.matches:
         bench = match.metadata
