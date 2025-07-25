@@ -49,12 +49,14 @@ index = pc.Index(INDEX_NAME)
 with open("benchmarks.json", "r") as f:
     DATA = json.load(f)["benchmarks"]
 
+# Build a mapping from lowercase benchmark name to the benchmark data for
+# constant-time lookup when retrieving a benchmark by name.
+BENCHMARK_MAP = {bench["name"].lower(): bench for bench in DATA}
+
 
 def get_benchmark(name: str) -> Dict[str, Any] | None:
-    for bench in DATA:
-        if bench["name"].lower() == name.lower():
-            return bench
-    return None
+    """Return benchmark data by name using a pre-built map."""
+    return BENCHMARK_MAP.get(name.lower())
 
 
 def search_benchmarks(query: str, top_k: int = 3) -> List[Dict[str, Any]]:
