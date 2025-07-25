@@ -10,13 +10,15 @@
         "factor_tilts": [],
         "esg": false,
         "weighting_method": "Market Cap",
-        "sector_focus": ["Broad Market"]
+        "sector_focus": ["Broad Market"],
+        "dividend_yield": 1.28
       },
       "fundamentals": {
-        "num_constituents": 503,
+        "num_constituents": 500,
         "rebalance_frequency": "Quarterly",
         "rebalance_dates": ["March", "June", "September", "December"],
-        "pe_ratio": 22.1
+        "pe_ratio": 22.1,
+        "dividend_yield": 1.28
       }
     },
     {
@@ -29,412 +31,15 @@
         "factor_tilts": [],
         "esg": false,
         "weighting_method": "Market Cap",
-        "sector_focus": ["Broad Market"]
+        "sector_focus": ["Broad Market"],
+        "dividend_yield": 1.35
       },
       "fundamentals": {
         "num_constituents": 1500,
         "rebalance_frequency": "Quarterly",
         "rebalance_dates": ["March", "June", "September", "December"],
-        "pe_ratio": 21.8
-      }
-    },
-    {
-      "name": "ESG Domestic",
-      "account_minimum": 250000,
-      "tags": {
-        "region": ["US"],
-        "asset_class": ["Equity"],
-        "style": ["All Cap", "Blend"],
-        "factor_tilts": [],
-        "esg": true,
-        "weighting_method": "ESG-Weighted",
-        "sector_focus": ["Broad Market"]
-      },
-      "fundamentals": {
-        "num_constituents": 800,
-        "rebalance_frequency": "Quarterly",
-        "rebalance_dates": ["March", "June", "September", "December"],
-        "pe_ratio": 21.8
-      }
-    },
-    {
-      "name": "ESG International",
-      "account_minimum": 250000,
-      "tags": {
-        "region": ["International Developed"],
-        "asset_class": ["Equity"],
-        "style": ["All Cap", "Blend"],
-        "factor_tilts": [],
-        "esg": true,
-        "weighting_method": "ESG-Weighted",
-        "sector_focus": ["Broad Market"]
-      },
-      "fundamentals": {
-        "num_constituents": 600,
-        "rebalance_frequency": "Quarterly",
-        "rebalance_dates": ["February", "May", "August", "November"],
-        "pe_ratio": 16.9
-      }
-    },
-    {
-      "name": "Fossil Free Reserves Domestic",
-      "account_minimum": 250000,
-      "tags": {
-        "region": ["US"],
-        "asset_class": ["Equity"],
-        "style": ["All Cap", "Blend"],
-        "factor_tilts": [],
-        "esg": true,
-        "weighting_method": "Market Cap",
-        "sector_focus": ["Broad Market"]
-      },
-      "fundamentals": {
-        "num_constituents": 750,
-        "rebalance_frequency": "Quarterly",
-        "rebalance_dates": ["March", "June", "September", "December"],
-        "pe_ratio": 23.2
-      }
-    },
-    {
-      "name": "Fossil Free Reserves International",
-      "account_minimum": 250000,
-      "tags": {
-        "region": ["International Developed"],
-        "asset_class": ["Equity"],
-        "style": ["All Cap", "Blend"],
-        "factor_tilts": [],
-        "esg": true,
-        "weighting_method": "Market Cap",
-        "sector_focus": ["Broad Market"]
-      },
-      "fundamentals": {
-        "num_constituents": 550,
-        "rebalance_frequency": "Quarterly",
-        "rebalance_dates": ["February", "May", "August", "November"],
-        "pe_ratio": 17.1
-      }
-    },
-    {
-      "name": "Jewish Values Domestic",
-      "account_minimum": 250000,
-      "tags": {
-        "region": ["US"],
-        "asset_class": ["Equity"],
-        "style": ["All Cap", "Blend"],
-        "factor_tilts": [],
-        "esg": true,
-        "weighting_method": "Values-Based",
-        "sector_focus": ["Broad Market"]
-      },
-      "fundamentals": {
-        "num_constituents": 400,
-        "rebalance_frequency": "Quarterly",
-        "rebalance_dates": ["March", "June", "September", "December"],
-        "pe_ratio": 21.5
-      }
-    },
-    {
-      "name": "RC Catholic Values Domestic",
-      "account_minimum": 250000,
-      "tags": {
-        "region": ["US"],
-        "asset_class": ["Equity"],
-        "style": ["All Cap", "Blend"],
-        "factor_tilts": [],
-        "esg": true,
-        "weighting_method": "Values-Based",
-        "sector_focus": ["Broad Market"]
-      },
-      "fundamentals": {
-        "num_constituents": 450,
-        "rebalance_frequency": "Quarterly",
-        "rebalance_dates": ["March", "June", "September", "December"],
-        "pe_ratio": 20.8
-      }
-    },
-    {
-      "name": "FT V Catholic Values International",
-      "account_minimum": 250000,
-      "tags": {
-        "region": ["International Developed"],
-        "asset_class": ["Equity"],
-        "style": ["All Cap", "Blend"],
-        "factor_tilts": [],
-        "esg": true,
-        "weighting_method": "Values-Based",
-        "sector_focus": ["Broad Market"]
-      },
-      "fundamentals": {
-        "num_constituents": 350,
-        "rebalance_frequency": "Quarterly",
-        "rebalance_dates": ["February", "May", "August", "November"],
-        "pe_ratio": 16.2
-      }
-    },
-    {
-      "name": "Clean Technology Domestic",
-      "account_minimum": 250000,
-      "tags": {
-        "region": ["US"],
-        "asset_class": ["Equity"],
-        "style": ["All Cap", "Growth"],
-        "factor_tilts": ["Growth"],
-        "esg": true,
-        "weighting_method": "Thematic",
-        "sector_focus": ["Clean Technology"]
-      },
-      "fundamentals": {
-        "num_constituents": 150,
-        "rebalance_frequency": "Quarterly",
-        "rebalance_dates": ["March", "June", "September", "December"],
-        "pe_ratio": 26.4
-      }
-    },
-    {
-      "name": "Clean Technology International",
-      "account_minimum": 250000,
-      "tags": {
-        "region": ["International Developed"],
-        "asset_class": ["Equity"],
-        "style": ["All Cap", "Growth"],
-        "factor_tilts": ["Growth"],
-        "esg": true,
-        "weighting_method": "Thematic",
-        "sector_focus": ["Clean Technology"]
-      },
-      "fundamentals": {
-        "num_constituents": 120,
-        "rebalance_frequency": "Quarterly",
-        "rebalance_dates": ["February", "May", "August", "November"],
-        "pe_ratio": 24.1
-      }
-    },
-    {
-      "name": "Calvert US Large Cap Core Responsible",
-      "account_minimum": 250000,
-      "tags": {
-        "region": ["US"],
-        "asset_class": ["Equity"],
-        "style": ["Large Cap", "Blend"],
-        "factor_tilts": [],
-        "esg": true,
-        "weighting_method": "ESG-Weighted",
-        "sector_focus": ["Broad Market"]
-      },
-      "fundamentals": {
-        "num_constituents": 300,
-        "rebalance_frequency": "Quarterly",
-        "rebalance_dates": ["March", "June", "September", "December"],
-        "pe_ratio": 22.3
-      }
-    },
-    {
-      "name": "Calvert US Large Cap Growth Responsible",
-      "account_minimum": 250000,
-      "tags": {
-        "region": ["US"],
-        "asset_class": ["Equity"],
-        "style": ["Large Cap", "Growth"],
-        "factor_tilts": ["Growth"],
-        "esg": true,
-        "weighting_method": "ESG-Weighted",
-        "sector_focus": ["Broad Market"]
-      },
-      "fundamentals": {
-        "num_constituents": 200,
-        "rebalance_frequency": "Quarterly",
-        "rebalance_dates": ["March", "June", "September", "December"],
-        "pe_ratio": 28.1
-      }
-    },
-    {
-      "name": "Calvert US Large Cap Value Responsible",
-      "account_minimum": 250000,
-      "tags": {
-        "region": ["US"],
-        "asset_class": ["Equity"],
-        "style": ["Large Cap", "Value"],
-        "factor_tilts": ["Value"],
-        "esg": true,
-        "weighting_method": "ESG-Weighted",
-        "sector_focus": ["Broad Market"]
-      },
-      "fundamentals": {
-        "num_constituents": 200,
-        "rebalance_frequency": "Quarterly",
-        "rebalance_dates": ["March", "June", "September", "December"],
-        "pe_ratio": 17.9
-      }
-    },
-    {
-      "name": "Calvert US Mid Cap Core Responsible",
-      "account_minimum": 250000,
-      "tags": {
-        "region": ["US"],
-        "asset_class": ["Equity"],
-        "style": ["Mid Cap", "Blend"],
-        "factor_tilts": [],
-        "esg": true,
-        "weighting_method": "ESG-Weighted",
-        "sector_focus": ["Broad Market"]
-      },
-      "fundamentals": {
-        "num_constituents": 250,
-        "rebalance_frequency": "Quarterly",
-        "rebalance_dates": ["March", "June", "September", "December"],
-        "pe_ratio": 19.4
-      }
-    },
-    {
-      "name": "MSCI KLD 400 Social",
-      "account_minimum": 250000,
-      "tags": {
-        "region": ["US"],
-        "asset_class": ["Equity"],
-        "style": ["Large Cap", "Blend"],
-        "factor_tilts": [],
-        "esg": true,
-        "weighting_method": "ESG-Weighted",
-        "sector_focus": ["Broad Market"]
-      },
-      "fundamentals": {
-        "num_constituents": 400,
-        "rebalance_frequency": "Quarterly",
-        "rebalance_dates": ["February", "May", "August", "November"],
-        "pe_ratio": 21.7
-      }
-    },
-    {
-      "name": "MSCI USA Catholic Values",
-      "account_minimum": 250000,
-      "tags": {
-        "region": ["US"],
-        "asset_class": ["Equity"],
-        "style": ["All Cap", "Blend"],
-        "factor_tilts": [],
-        "esg": true,
-        "weighting_method": "Values-Based",
-        "sector_focus": ["Broad Market"]
-      },
-      "fundamentals": {
-        "num_constituents": 500,
-        "rebalance_frequency": "Quarterly",
-        "rebalance_dates": ["February", "May", "August", "November"],
-        "pe_ratio": 20.9
-      }
-    },
-    {
-      "name": "MSCI USA Selection Index",
-      "account_minimum": 250000,
-      "tags": {
-        "region": ["US"],
-        "asset_class": ["Equity"],
-        "style": ["All Cap", "Blend"],
-        "factor_tilts": [],
-        "esg": true,
-        "weighting_method": "ESG-Weighted",
-        "sector_focus": ["Broad Market"]
-      },
-      "fundamentals": {
-        "num_constituents": 600,
-        "rebalance_frequency": "Quarterly",
-        "rebalance_dates": ["February", "May", "August", "November"],
-        "pe_ratio": 21.4
-      }
-    },
-    {
-      "name": "Calvert International Responsible",
-      "account_minimum": 250000,
-      "tags": {
-        "region": ["International Developed"],
-        "asset_class": ["Equity"],
-        "style": ["All Cap", "Blend"],
-        "factor_tilts": [],
-        "esg": true,
-        "weighting_method": "ESG-Weighted",
-        "sector_focus": ["Broad Market"]
-      },
-      "fundamentals": {
-        "num_constituents": 400,
-        "rebalance_frequency": "Quarterly",
-        "rebalance_dates": ["February", "May", "August", "November"],
-        "pe_ratio": 16.8
-      }
-    },
-    {
-      "name": "MSCI ACWI Selection Index",
-      "account_minimum": 500000,
-      "tags": {
-        "region": ["Global"],
-        "asset_class": ["Equity"],
-        "style": ["All Cap", "Blend"],
-        "factor_tilts": [],
-        "esg": true,
-        "weighting_method": "ESG-Weighted",
-        "sector_focus": ["Broad Market"]
-      },
-      "fundamentals": {
-        "num_constituents": 800,
-        "rebalance_frequency": "Quarterly",
-        "rebalance_dates": ["February", "May", "August", "November"],
-        "pe_ratio": 19.6
-      }
-    },
-    {
-      "name": "MSCI EAFE Selection Index",
-      "account_minimum": 250000,
-      "tags": {
-        "region": ["International Developed"],
-        "asset_class": ["Equity"],
-        "style": ["All Cap", "Blend"],
-        "factor_tilts": [],
-        "esg": true,
-        "weighting_method": "ESG-Weighted",
-        "sector_focus": ["Broad Market"]
-      },
-      "fundamentals": {
-        "num_constituents": 400,
-        "rebalance_frequency": "Quarterly",
-        "rebalance_dates": ["February", "May", "August", "November"],
-        "pe_ratio": 16.5
-      }
-    },
-    {
-      "name": "MSCI World ESG Index",
-      "account_minimum": 450000,
-      "tags": {
-        "region": ["Global"],
-        "asset_class": ["Equity"],
-        "style": ["All Cap", "Blend"],
-        "factor_tilts": [],
-        "esg": true,
-        "weighting_method": "ESG-Weighted",
-        "sector_focus": ["Broad Market"]
-      },
-      "fundamentals": {
-        "num_constituents": 600,
-        "rebalance_frequency": "Quarterly",
-        "rebalance_dates": ["February", "May", "August", "November"],
-        "pe_ratio": 19.2
-      }
-    },
-    {
-      "name": "MSCI World ex USA Selection Index",
-      "account_minimum": 250000,
-      "tags": {
-        "region": ["International Developed"],
-        "asset_class": ["Equity"],
-        "style": ["All Cap", "Blend"],
-        "factor_tilts": [],
-        "esg": true,
-        "weighting_method": "ESG-Weighted",
-        "sector_focus": ["Broad Market"]
-      },
-      "fundamentals": {
-        "num_constituents": 500,
-        "rebalance_frequency": "Quarterly",
-        "rebalance_dates": ["February", "May", "August", "November"],
-        "pe_ratio": 16.7
+        "pe_ratio": 21.8,
+        "dividend_yield": 1.35
       }
     },
     {
@@ -447,13 +52,57 @@
         "factor_tilts": [],
         "esg": false,
         "weighting_method": "Market Cap",
-        "sector_focus": ["Broad Market"]
+        "sector_focus": ["Broad Market"],
+        "dividend_yield": 1.46
       },
       "fundamentals": {
         "num_constituents": 400,
         "rebalance_frequency": "Quarterly",
         "rebalance_dates": ["February", "May", "August", "November"],
-        "pe_ratio": 14.2
+        "pe_ratio": 14.2,
+        "dividend_yield": 1.46
+      }
+    },
+    {
+      "name": "S&P SmallCap 600",
+      "account_minimum": 250000,
+      "tags": {
+        "region": ["US"],
+        "asset_class": ["Equity"],
+        "style": ["Small Cap", "Blend"],
+        "factor_tilts": [],
+        "esg": false,
+        "weighting_method": "Market Cap",
+        "sector_focus": ["Broad Market"],
+        "dividend_yield": 1.58
+      },
+      "fundamentals": {
+        "num_constituents": 600,
+        "rebalance_frequency": "Quarterly",
+        "rebalance_dates": ["March", "June", "September", "December"],
+        "pe_ratio": 16.9,
+        "dividend_yield": 1.58
+      }
+    },
+    {
+      "name": "Russell 1000",
+      "account_minimum": 250000,
+      "tags": {
+        "region": ["US"],
+        "asset_class": ["Equity"],
+        "style": ["Large Cap", "Blend"],
+        "factor_tilts": [],
+        "esg": false,
+        "weighting_method": "Market Cap",
+        "sector_focus": ["Broad Market"],
+        "dividend_yield": 1.30
+      },
+      "fundamentals": {
+        "num_constituents": 1000,
+        "rebalance_frequency": "Annually",
+        "rebalance_dates": ["June"],
+        "pe_ratio": 21.9,
+        "dividend_yield": 1.30
       }
     },
     {
@@ -466,51 +115,204 @@
         "factor_tilts": [],
         "esg": false,
         "weighting_method": "Market Cap",
-        "sector_focus": ["Broad Market"]
+        "sector_focus": ["Broad Market"],
+        "dividend_yield": 1.62
       },
       "fundamentals": {
         "num_constituents": 2000,
         "rebalance_frequency": "Annually",
         "rebalance_dates": ["June"],
-        "pe_ratio": 19.2
+        "pe_ratio": 19.2,
+        "dividend_yield": 1.62
       }
     },
     {
-      "name": "MSCI EAFE",
+      "name": "Russell 3000",
       "account_minimum": 250000,
       "tags": {
-        "region": ["International Developed"],
+        "region": ["US"],
         "asset_class": ["Equity"],
         "style": ["All Cap", "Blend"],
         "factor_tilts": [],
         "esg": false,
         "weighting_method": "Market Cap",
-        "sector_focus": ["Broad Market"]
+        "sector_focus": ["Broad Market"],
+        "dividend_yield": 1.32
       },
       "fundamentals": {
-        "num_constituents": 826,
-        "rebalance_frequency": "Quarterly",
-        "rebalance_dates": ["February", "May", "August", "November"],
-        "pe_ratio": 15.8
+        "num_constituents": 3000,
+        "rebalance_frequency": "Annually",
+        "rebalance_dates": ["June"],
+        "pe_ratio": 21.5,
+        "dividend_yield": 1.32
       }
     },
     {
-      "name": "MSCI ACWI",
-      "account_minimum": 600000,
+      "name": "Russell Midcap",
+      "account_minimum": 250000,
       "tags": {
-        "region": ["Global"],
+        "region": ["US"],
         "asset_class": ["Equity"],
-        "style": ["All Cap", "Blend"],
+        "style": ["Mid Cap", "Blend"],
         "factor_tilts": [],
         "esg": false,
         "weighting_method": "Market Cap",
-        "sector_focus": ["Broad Market"]
+        "sector_focus": ["Broad Market"],
+        "dividend_yield": 1.48
       },
       "fundamentals": {
-        "num_constituents": 2887,
+        "num_constituents": 800,
+        "rebalance_frequency": "Annually",
+        "rebalance_dates": ["June"],
+        "pe_ratio": 19.8,
+        "dividend_yield": 1.48
+      }
+    },
+    {
+      "name": "S&P 500 Growth",
+      "account_minimum": 250000,
+      "tags": {
+        "region": ["US"],
+        "asset_class": ["Equity"],
+        "style": ["Large Cap", "Growth"],
+        "factor_tilts": ["Growth"],
+        "esg": false,
+        "weighting_method": "Market Cap",
+        "sector_focus": ["Broad Market"],
+        "dividend_yield": 0.95
+      },
+      "fundamentals": {
+        "num_constituents": 250,
         "rebalance_frequency": "Quarterly",
-        "rebalance_dates": ["February", "May", "August", "November"],
-        "pe_ratio": 19.8
+        "rebalance_dates": ["March", "June", "September", "December"],
+        "pe_ratio": 27.3,
+        "dividend_yield": 0.95
+      }
+    },
+    {
+      "name": "S&P 500 Value",
+      "account_minimum": 250000,
+      "tags": {
+        "region": ["US"],
+        "asset_class": ["Equity"],
+        "style": ["Large Cap", "Value"],
+        "factor_tilts": ["Value"],
+        "esg": false,
+        "weighting_method": "Market Cap",
+        "sector_focus": ["Broad Market"],
+        "dividend_yield": 1.75
+      },
+      "fundamentals": {
+        "num_constituents": 250,
+        "rebalance_frequency": "Quarterly",
+        "rebalance_dates": ["March", "June", "September", "December"],
+        "pe_ratio": 17.6,
+        "dividend_yield": 1.75
+      }
+    },
+    {
+      "name": "Russell 1000 Growth",
+      "account_minimum": 250000,
+      "tags": {
+        "region": ["US"],
+        "asset_class": ["Equity"],
+        "style": ["Large Cap", "Growth"],
+        "factor_tilts": ["Growth"],
+        "esg": false,
+        "weighting_method": "Market Cap",
+        "sector_focus": ["Broad Market"],
+        "dividend_yield": 0.98
+      },
+      "fundamentals": {
+        "num_constituents": 493,
+        "rebalance_frequency": "Annually",
+        "rebalance_dates": ["June"],
+        "pe_ratio": 26.8,
+        "dividend_yield": 0.98
+      }
+    },
+    {
+      "name": "Russell 1000 Value",
+      "account_minimum": 250000,
+      "tags": {
+        "region": ["US"],
+        "asset_class": ["Equity"],
+        "style": ["Large Cap", "Value"],
+        "factor_tilts": ["Value"],
+        "esg": false,
+        "weighting_method": "Market Cap",
+        "sector_focus": ["Broad Market"],
+        "dividend_yield": 1.78
+      },
+      "fundamentals": {
+        "num_constituents": 848,
+        "rebalance_frequency": "Annually",
+        "rebalance_dates": ["June"],
+        "pe_ratio": 17.9,
+        "dividend_yield": 1.78
+      }
+    },
+    {
+      "name": "Russell 2000 Value",
+      "account_minimum": 2000000,
+      "tags": {
+        "region": ["US"],
+        "asset_class": ["Equity"],
+        "style": ["Small Cap", "Value"],
+        "factor_tilts": ["Value"],
+        "esg": false,
+        "weighting_method": "Market Cap",
+        "sector_focus": ["Broad Market"],
+        "dividend_yield": 2.25
+      },
+      "fundamentals": {
+        "num_constituents": 1378,
+        "rebalance_frequency": "Annually",
+        "rebalance_dates": ["June"],
+        "pe_ratio": 15.1,
+        "dividend_yield": 2.25
+      }
+    },
+    {
+      "name": "Russell 3000 Growth",
+      "account_minimum": 250000,
+      "tags": {
+        "region": ["US"],
+        "asset_class": ["Equity"],
+        "style": ["All Cap", "Growth"],
+        "factor_tilts": ["Growth"],
+        "esg": false,
+        "weighting_method": "Market Cap",
+        "sector_focus": ["Broad Market"],
+        "dividend_yield": 1.00
+      },
+      "fundamentals": {
+        "num_constituents": 1458,
+        "rebalance_frequency": "Annually",
+        "rebalance_dates": ["June"],
+        "pe_ratio": 26.2,
+        "dividend_yield": 1.00
+      }
+    },
+    {
+      "name": "Russell 3000 Value",
+      "account_minimum": 250000,
+      "tags": {
+        "region": ["US"],
+        "asset_class": ["Equity"],
+        "style": ["All Cap", "Value"],
+        "factor_tilts": ["Value"],
+        "esg": false,
+        "weighting_method": "Market Cap",
+        "sector_focus": ["Broad Market"],
+        "dividend_yield": 1.82
+      },
+      "fundamentals": {
+        "num_constituents": 2053,
+        "rebalance_frequency": "Annually",
+        "rebalance_dates": ["June"],
+        "pe_ratio": 17.3,
+        "dividend_yield": 1.82
       }
     },
     {
@@ -523,13 +325,309 @@
         "factor_tilts": ["Growth"],
         "esg": false,
         "weighting_method": "Modified Market Cap",
-        "sector_focus": ["Technology"]
+        "sector_focus": ["Technology"],
+        "dividend_yield": 0.75
       },
       "fundamentals": {
         "num_constituents": 100,
         "rebalance_frequency": "Quarterly",
         "rebalance_dates": ["March", "June", "September", "December"],
-        "pe_ratio": 28.4
+        "pe_ratio": 28.4,
+        "dividend_yield": 0.75
+      }
+    },
+    {
+      "name": "US Dividend",
+      "account_minimum": 250000,
+      "tags": {
+        "region": ["US"],
+        "asset_class": ["Equity"],
+        "style": ["All Cap", "Value"],
+        "factor_tilts": ["High Dividend Yield"],
+        "esg": false,
+        "weighting_method": "Dividend Yield",
+        "sector_focus": ["Broad Market"],
+        "dividend_yield": 4.20
+      },
+      "fundamentals": {
+        "num_constituents": 1000,
+        "rebalance_frequency": "Quarterly",
+        "rebalance_dates": ["March", "June", "September", "December"],
+        "pe_ratio": 15.4,
+        "dividend_yield": 4.20
+      }
+    },
+    {
+      "name": "Dow Jones US Select Dividend",
+      "account_minimum": 250000,
+      "tags": {
+        "region": ["US"],
+        "asset_class": ["Equity"],
+        "style": ["All Cap", "Value"],
+        "factor_tilts": ["High Dividend Yield"],
+        "esg": false,
+        "weighting_method": "Dividend Yield",
+        "sector_focus": ["Broad Market"],
+        "dividend_yield": 4.10
+      },
+      "fundamentals": {
+        "num_constituents": 100,
+        "rebalance_frequency": "Annually",
+        "rebalance_dates": ["March"],
+        "pe_ratio": 14.1,
+        "dividend_yield": 4.10
+      }
+    },
+    {
+      "name": "WisdomTree US High Dividend",
+      "account_minimum": 250000,
+      "tags": {
+        "region": ["US"],
+        "asset_class": ["Equity"],
+        "style": ["All Cap", "Value"],
+        "factor_tilts": ["High Dividend Yield"],
+        "esg": false,
+        "weighting_method": "Dividend Yield",
+        "sector_focus": ["Broad Market"],
+        "dividend_yield": 4.80
+      },
+      "fundamentals": {
+        "num_constituents": 300,
+        "rebalance_frequency": "Annually",
+        "rebalance_dates": ["December"],
+        "pe_ratio": 13.8,
+        "dividend_yield": 4.80
+      }
+    },
+    {
+      "name": "WisdomTree US Dividend",
+      "account_minimum": 250000,
+      "tags": {
+        "region": ["US"],
+        "asset_class": ["Equity"],
+        "style": ["All Cap", "Value"],
+        "factor_tilts": ["High Dividend Yield"],
+        "esg": false,
+        "weighting_method": "Dividend Yield",
+        "sector_focus": ["Broad Market"],
+        "dividend_yield": 4.50
+      },
+      "fundamentals": {
+        "num_constituents": 400,
+        "rebalance_frequency": "Annually",
+        "rebalance_dates": ["December"],
+        "pe_ratio": 15.2,
+        "dividend_yield": 4.50
+      }
+    },
+    {
+      "name": "S&P United States REIT",
+      "account_minimum": 250000,
+      "tags": {
+        "region": ["US"],
+        "asset_class": ["REIT"],
+        "style": ["All Cap", "Blend"],
+        "factor_tilts": ["High Dividend Yield"],
+        "esg": false,
+        "weighting_method": "Market Cap",
+        "sector_focus": ["Real Estate"],
+        "dividend_yield": 3.80
+      },
+      "fundamentals": {
+        "num_constituents": 150,
+        "rebalance_frequency": "Quarterly",
+        "rebalance_dates": ["March", "June", "September", "December"],
+        "pe_ratio": 45.2,
+        "dividend_yield": 3.80
+      }
+    },
+    {
+      "name": "MSCI EAFE",
+      "account_minimum": 250000,
+      "tags": {
+        "region": ["International Developed"],
+        "asset_class": ["Equity"],
+        "style": ["All Cap", "Blend"],
+        "factor_tilts": [],
+        "esg": false,
+        "weighting_method": "Market Cap",
+        "sector_focus": ["Broad Market"],
+        "dividend_yield": 2.85
+      },
+      "fundamentals": {
+        "num_constituents": 826,
+        "rebalance_frequency": "Quarterly",
+        "rebalance_dates": ["February", "May", "August", "November"],
+        "pe_ratio": 15.8,
+        "dividend_yield": 2.85
+      }
+    },
+    {
+      "name": "MSCI ACWI",
+      "account_minimum": 600000,
+      "tags": {
+        "region": ["Global"],
+        "asset_class": ["Equity"],
+        "style": ["All Cap", "Blend"],
+        "factor_tilts": [],
+        "esg": false,
+        "weighting_method": "Market Cap",
+        "sector_focus": ["Broad Market"],
+        "dividend_yield": 1.57
+      },
+      "fundamentals": {
+        "num_constituents": 2887,
+        "rebalance_frequency": "Quarterly",
+        "rebalance_dates": ["February", "May", "August", "November"],
+        "pe_ratio": 19.8,
+        "dividend_yield": 1.57
+      }
+    },
+    {
+      "name": "MSCI World",
+      "account_minimum": 450000,
+      "tags": {
+        "region": ["Global"],
+        "asset_class": ["Equity"],
+        "style": ["All Cap", "Blend"],
+        "factor_tilts": [],
+        "esg": false,
+        "weighting_method": "Market Cap",
+        "sector_focus": ["Broad Market"],
+        "dividend_yield": 1.75
+      },
+      "fundamentals": {
+        "num_constituents": 1583,
+        "rebalance_frequency": "Quarterly",
+        "rebalance_dates": ["February", "May", "August", "November"],
+        "pe_ratio": 18.7,
+        "dividend_yield": 1.75
+      }
+    },
+    {
+      "name": "MSCI World ex USA",
+      "account_minimum": 250000,
+      "tags": {
+        "region": ["International Developed"],
+        "asset_class": ["Equity"],
+        "style": ["All Cap", "Blend"],
+        "factor_tilts": [],
+        "esg": false,
+        "weighting_method": "Market Cap",
+        "sector_focus": ["Broad Market"],
+        "dividend_yield": 2.90
+      },
+      "fundamentals": {
+        "num_constituents": 1080,
+        "rebalance_frequency": "Quarterly",
+        "rebalance_dates": ["February", "May", "August", "November"],
+        "pe_ratio": 15.9,
+        "dividend_yield": 2.90
+      }
+    },
+    {
+      "name": "MSCI Europe",
+      "account_minimum": 250000,
+      "tags": {
+        "region": ["International Developed"],
+        "asset_class": ["Equity"],
+        "style": ["All Cap", "Blend"],
+        "factor_tilts": [],
+        "esg": false,
+        "weighting_method": "Market Cap",
+        "sector_focus": ["Regional"],
+        "dividend_yield": 3.20
+      },
+      "fundamentals": {
+        "num_constituents": 434,
+        "rebalance_frequency": "Quarterly",
+        "rebalance_dates": ["February", "May", "August", "November"],
+        "pe_ratio": 16.2,
+        "dividend_yield": 3.20
+      }
+    },
+    {
+      "name": "ESG Domestic",
+      "account_minimum": 250000,
+      "tags": {
+        "region": ["US"],
+        "asset_class": ["Equity"],
+        "style": ["All Cap", "Blend"],
+        "factor_tilts": [],
+        "esg": true,
+        "weighting_method": "ESG-Weighted",
+        "sector_focus": ["Broad Market"],
+        "dividend_yield": 1.15
+      },
+      "fundamentals": {
+        "num_constituents": 800,
+        "rebalance_frequency": "Quarterly",
+        "rebalance_dates": ["March", "June", "September", "December"],
+        "pe_ratio": 21.8,
+        "dividend_yield": 1.15
+      }
+    },
+    {
+      "name": "ESG International",
+      "account_minimum": 250000,
+      "tags": {
+        "region": ["International Developed"],
+        "asset_class": ["Equity"],
+        "style": ["All Cap", "Blend"],
+        "factor_tilts": [],
+        "esg": true,
+        "weighting_method": "ESG-Weighted",
+        "sector_focus": ["Broad Market"],
+        "dividend_yield": 2.50
+      },
+      "fundamentals": {
+        "num_constituents": 600,
+        "rebalance_frequency": "Quarterly",
+        "rebalance_dates": ["February", "May", "August", "November"],
+        "pe_ratio": 16.9,
+        "dividend_yield": 2.50
+      }
+    },
+    {
+      "name": "Clean Technology Domestic",
+      "account_minimum": 250000,
+      "tags": {
+        "region": ["US"],
+        "asset_class": ["Equity"],
+        "style": ["All Cap", "Growth"],
+        "factor_tilts": ["Growth"],
+        "esg": true,
+        "weighting_method": "Thematic",
+        "sector_focus": ["Clean Technology"],
+        "dividend_yield": 0.85
+      },
+      "fundamentals": {
+        "num_constituents": 150,
+        "rebalance_frequency": "Quarterly",
+        "rebalance_dates": ["March", "June", "September", "December"],
+        "pe_ratio": 26.4,
+        "dividend_yield": 0.85
+      }
+    },
+    {
+      "name": "Clean Technology International",
+      "account_minimum": 250000,
+      "tags": {
+        "region": ["International Developed"],
+        "asset_class": ["Equity"],
+        "style": ["All Cap", "Growth"],
+        "factor_tilts": ["Growth"],
+        "esg": true,
+        "weighting_method": "Thematic",
+        "sector_focus": ["Clean Technology"],
+        "dividend_yield": 1.20
+      },
+      "fundamentals": {
+        "num_constituents": 120,
+        "rebalance_frequency": "Quarterly",
+        "rebalance_dates": ["February", "May", "August", "November"],
+        "pe_ratio": 24.1,
+        "dividend_yield": 1.20
       }
     }
   ]

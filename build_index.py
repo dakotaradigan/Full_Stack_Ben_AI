@@ -63,6 +63,7 @@ def main() -> None:
             "rebalance_frequency": bench["fundamentals"]["rebalance_frequency"],
             "rebalance_dates": ",".join(bench["fundamentals"]["rebalance_dates"]),
             "pe_ratio": bench["fundamentals"]["pe_ratio"],
+            "dividend_yield": bench["fundamentals"].get("dividend_yield"),
         }
 
         items.append((bench["name"], vec, metadata))
