@@ -9,6 +9,23 @@ from openai import OpenAI
 with open("system_prompt.txt", "r", encoding="utf-8") as f:
     SYSTEM_PROMPT = f.read()
 
+# Extract the disclaimer text from the system prompt so it can be
+# appended to responses in the chat loop. The line in the prompt looks
+# like:
+# "- Provide disclaimer every 3-4 interactions: *\u201cThis assistant ... authority.\u201d*"
+import re
+match = re.search(
+    r"disclaimer every 3-4 interactions:\s*\*?[\"\u201c](.+?)[\"\u201d]\*?",
+    SYSTEM_PROMPT,
+    flags=re.IGNORECASE,
+)
+DISCLAIMER_TEXT = (
+    match.group(1).strip()
+    if match
+    else "This assistant provides benchmark eligibility guidance only. "
+    "No investment advice or account approval authority."
+)
+
 PINECONE_API_KEY = os.getenv("PINECONE_API_KEY", "YOUR_PINECONE_API_KEY")
 PINECONE_ENV = os.getenv("PINECONE_ENV", "YOUR_PINECONE_ENV")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "YOUR_OPENAI_API_KEY")
@@ -133,6 +150,7 @@ def call_function(name: str, arguments: Dict[str, Any]) -> Dict[str, Any]:
 def chat():
     messages = [{"role": "system", "content": SYSTEM_PROMPT}]
     print("Hello! I'm here to assist with benchmark eligibility questions. How can I help you today?")
+    resp_count = 0
     while True:
         user = input("\nUser: ")
         if user.lower() in {"exit", "quit"}:
@@ -168,10 +186,16 @@ def chat():
                 messages=messages,
             )
             final = follow.choices[0].message.content
+            resp_count += 1
+            if resp_count % 4 == 0:
+                final = f"{final}\n\n{DISCLAIMER_TEXT}"
             messages.append({"role": "assistant", "content": final})
             print(f"\nAssistant: {final}")
         else:
             final = msg.content or ""
+            resp_count += 1
+            if resp_count % 4 == 0:
+                final = f"{final}\n\n{DISCLAIMER_TEXT}"
             messages.append({"role": "assistant", "content": final})
             print(f"\nAssistant: {final}")
 
