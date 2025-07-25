@@ -68,6 +68,7 @@ def search_benchmarks(query: str, top_k: int = 3) -> List[Dict[str, Any]]:
         results.append({
             "name": bench["name"],
             "account_minimum": bench["account_minimum"],
+            "dividend_yield": bench.get("dividend_yield"),
             "score": match.score,
         })
     return results
@@ -76,7 +77,11 @@ def search_benchmarks(query: str, top_k: int = 3) -> List[Dict[str, Any]]:
 def get_minimum(name: str) -> Dict[str, Any]:
     bench = get_benchmark(name)
     if bench:
-        return {"name": bench["name"], "account_minimum": bench["account_minimum"]}
+        return {
+            "name": bench["name"],
+            "account_minimum": bench["account_minimum"],
+            "dividend_yield": bench.get("fundamentals", {}).get("dividend_yield"),
+        }
     return {"error": f"Benchmark '{name}' not found"}
 
 
@@ -85,12 +90,22 @@ def blend_minimum(allocations: List[Dict[str, Any]]) -> Dict[str, Any]:
     if abs(total_weight - 1.0) > 1e-6:
         return {"error": f"weights sum to {total_weight}"}
     total = 0.0
+    weighted_yield = 0.0
+    has_yield = True
     for a in allocations:
         bench = get_benchmark(a.get("name", ""))
         if not bench:
             return {"error": f"Benchmark '{a.get('name')}' not found"}
         total += bench["account_minimum"] * a["weight"]
-    return {"blend_minimum": total}
+        dy = bench.get("fundamentals", {}).get("dividend_yield")
+        if dy is None:
+            has_yield = False
+        else:
+            weighted_yield += dy * a["weight"]
+    result = {"blend_minimum": total}
+    if has_yield:
+        result["dividend_yield"] = weighted_yield
+    return result
 
 
 FUNCTIONS = [
