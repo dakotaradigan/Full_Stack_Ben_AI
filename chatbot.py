@@ -3,24 +3,24 @@ import os
 from typing import List, Dict, Any
 
 from pinecone import Pinecone
-import openai
+from openai import OpenAI
 
 # Load the large system prompt from an external file for readability
-with open("system_prompt.txt", "r") as f:
+with open("system_prompt.txt", "r", encoding="utf-8") as f:
     SYSTEM_PROMPT = f.read()
 
 PINECONE_API_KEY = os.getenv("PINECONE_API_KEY", "YOUR_PINECONE_API_KEY")
 PINECONE_ENV = os.getenv("PINECONE_ENV", "YOUR_PINECONE_ENV")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "YOUR_OPENAI_API_KEY")
 
-openai.api_key = OPENAI_API_KEY
-pc = Pinecone(api_key=PINECONE_API_KEY, environment=PINECONE_ENV)
+client = OpenAI(api_key=OPENAI_API_KEY)
+pc = Pinecone(api_key=PINECONE_API_KEY)
 
 EMBEDDING_MODEL = "text-embedding-3-small"
 
 def embed(text: str) -> List[float]:
-    resp = openai.Embedding.create(model=EMBEDDING_MODEL, input=text)
-    return resp["data"][0]["embedding"]
+    resp = client.embeddings.create(model=EMBEDDING_MODEL, input=text)
+    return resp.data[0].embedding
 
 INDEX_NAME = "benchmark-index"
 if INDEX_NAME not in pc.list_indexes().names():
@@ -138,28 +138,40 @@ def chat():
         if user.lower() in {"exit", "quit"}:
             break
         messages.append({"role": "user", "content": user})
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo-0613",
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo",
             messages=messages,
-            functions=FUNCTIONS,
-            function_call="auto",
+            tools=[{"type": "function", "function": func} for func in FUNCTIONS],
+            tool_choice="auto",
         )
-        msg = response["choices"][0]["message"]
-        if msg.get("function_call"):
-            func_name = msg["function_call"]["name"]
-            args = json.loads(msg["function_call"]["arguments"] or "{}")
-            result = call_function(func_name, args)
-            messages.append(msg)
-            messages.append({"role": "function", "name": func_name, "content": json.dumps(result)})
-            follow = openai.ChatCompletion.create(
-                model="gpt-3.5-turbo-0613",
+        msg = response.choices[0].message
+        if msg.tool_calls:
+            # Add the assistant message with tool calls first
+            messages.append({"role": "assistant", "content": None, "tool_calls": msg.tool_calls})
+
+            # Handle each tool call individually
+            for tool_call in msg.tool_calls:
+                func_name = tool_call.function.name
+                args = json.loads(tool_call.function.arguments or "{}")
+                result = call_function(func_name, args)
+
+                # Add individual tool response
+                messages.append({
+                    "role": "tool",
+                    "tool_call_id": tool_call.id,
+                    "content": json.dumps(result)
+                })
+
+            # Now get the final response
+            follow = client.chat.completions.create(
+                model="gpt-3.5-turbo",
                 messages=messages,
             )
-            final = follow["choices"][0]["message"]["content"]
+            final = follow.choices[0].message.content
             messages.append({"role": "assistant", "content": final})
             print(f"\nAssistant: {final}")
         else:
-            final = msg.get("content", "")
+            final = msg.content or ""
             messages.append({"role": "assistant", "content": final})
             print(f"\nAssistant: {final}")
 
