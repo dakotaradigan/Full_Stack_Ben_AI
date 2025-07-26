@@ -2,6 +2,8 @@ import json
 import os
 from typing import List, Dict, Any
 
+import tiktoken
+
 from pinecone import Pinecone
 from openai import OpenAI
 
@@ -35,9 +37,61 @@ pc = Pinecone(api_key=PINECONE_API_KEY, environment=PINECONE_ENV)
 
 EMBEDDING_MODEL = "text-embedding-3-small"
 
+# Chat completion model and token limits
+CHAT_MODEL = "gpt-3.5-turbo"
+MAX_MODEL_TOKENS = 16000
+TOKEN_MARGIN = 1000
+
 def embed(text: str) -> List[float]:
     resp = client.embeddings.create(model=EMBEDDING_MODEL, input=text)
     return resp.data[0].embedding
+
+
+def num_tokens_from_messages(messages: List[Dict[str, Any]], model: str = CHAT_MODEL) -> int:
+    """Return total token count for a list of chat messages."""
+    try:
+        encoding = tiktoken.encoding_for_model(model)
+    except KeyError:
+        encoding = tiktoken.get_encoding("cl100k_base")
+
+    if model.startswith("gpt-3.5-turbo"):
+        tokens_per_message = 4
+        tokens_per_name = -1
+    elif model.startswith("gpt-4"):
+        tokens_per_message = 3
+        tokens_per_name = 1
+    else:
+        tokens_per_message = 3
+        tokens_per_name = 1
+
+    total_tokens = 0
+    for message in messages:
+        total_tokens += tokens_per_message
+        for key, value in message.items():
+            if value is None:
+                continue
+            total_tokens += len(encoding.encode(str(value)))
+            if key == "name":
+                total_tokens += tokens_per_name
+    total_tokens += 3
+    return total_tokens
+
+
+def trim_history(messages: List[Dict[str, Any]], limit: int = MAX_MODEL_TOKENS - TOKEN_MARGIN) -> bool:
+    """Trim oldest user/assistant pairs until total tokens are under limit."""
+    truncated = False
+    while num_tokens_from_messages(messages) > limit and len(messages) > 1:
+        # Find first user message after the system prompt
+        start = next((i for i, m in enumerate(messages) if i > 0 and m["role"] == "user"), None)
+        if start is None:
+            break
+        end = start + 1
+        # remove messages until just before next user message
+        while end < len(messages) and messages[end]["role"] != "user":
+            end += 1
+        del messages[start:end]
+        truncated = True
+    return truncated
 
 INDEX_NAME = "benchmark-index"
 if INDEX_NAME not in pc.list_indexes().names():
@@ -231,8 +285,10 @@ def chat():
         if user.lower() in {"exit", "quit"}:
             break
         messages.append({"role": "user", "content": user})
+        if trim_history(messages):
+            print("[Notice: conversation history truncated to fit token limit]")
         response = client.chat.completions.create(
-            model="gpt-3.5-turbo",
+            model=CHAT_MODEL,
             messages=messages,
             tools=[{"type": "function", "function": func} for func in FUNCTIONS],
             tool_choice="auto",
@@ -241,6 +297,8 @@ def chat():
         if msg.tool_calls:
             # Add the assistant message with tool calls first
             messages.append({"role": "assistant", "content": None, "tool_calls": msg.tool_calls})
+            if trim_history(messages):
+                print("[Notice: conversation history truncated to fit token limit]")
 
             # Handle each tool call individually
             for tool_call in msg.tool_calls:
@@ -254,10 +312,12 @@ def chat():
                     "tool_call_id": tool_call.id,
                     "content": json.dumps(result)
                 })
+                if trim_history(messages):
+                    print("[Notice: conversation history truncated to fit token limit]")
 
             # Now get the final response
             follow = client.chat.completions.create(
-                model="gpt-3.5-turbo",
+                model=CHAT_MODEL,
                 messages=messages,
             )
             final = follow.choices[0].message.content
