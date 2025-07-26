@@ -42,12 +42,16 @@ def process_message(user_message: str) -> str:
     resp_count = session["resp_count"]
 
     messages.append({"role": "user", "content": user_message})
-    response = chatbot.client.chat.completions.create(
-        model="gpt-3.5-turbo",
-        messages=messages,
-        tools=[{"type": "function", "function": func} for func in chatbot.FUNCTIONS],
-        tool_choice="auto",
-    )
+    try:
+        response = chatbot._with_retry(
+            model="gpt-3.5-turbo",
+            messages=messages,
+            tools=[{"type": "function", "function": func} for func in chatbot.FUNCTIONS],
+            tool_choice="auto",
+        )
+    except Exception:
+        app.logger.exception("Failed to create chat completion")
+        return "Sorry, something went wrong. Please try again later."
     msg = response.choices[0].message
     final = ""
     if msg.tool_calls:
@@ -60,10 +64,14 @@ def process_message(user_message: str) -> str:
                 "tool_call_id": call.id,
                 "content": json.dumps(result)
             })
-        follow = chatbot.client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=messages,
-        )
+        try:
+            follow = chatbot._with_retry(
+                model="gpt-3.5-turbo",
+                messages=messages,
+            )
+        except Exception:
+            app.logger.exception("Failed to generate follow-up response")
+            return "Sorry, something went wrong. Please try again later."
         final = follow.choices[0].message.content
     else:
         final = msg.content or ""

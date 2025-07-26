@@ -4,6 +4,8 @@ from typing import List, Dict, Any
 
 import tiktoken
 
+import logging
+import time
 from pinecone import Pinecone
 from openai import OpenAI
 
@@ -44,6 +46,24 @@ EMBEDDING_MODEL = "text-embedding-3-small"
 CHAT_MODEL = "gpt-3.5-turbo"
 MAX_MODEL_TOKENS = 16000
 TOKEN_MARGIN = 1000
+
+
+def _with_retry(*, max_attempts: int = 3, **kwargs):
+    """Call the OpenAI chat API with simple exponential backoff."""
+    for attempt in range(1, max_attempts + 1):
+        try:
+            return client.chat.completions.create(**kwargs)
+        except Exception as exc:
+            if attempt == max_attempts:
+                logging.error("OpenAI request failed after retries", exc_info=True)
+                raise
+            logging.warning(
+                "OpenAI request failed (attempt %s/%s): %s",
+                attempt,
+                max_attempts,
+                exc,
+            )
+            time.sleep(2 ** attempt)
 
 def embed(text: str) -> List[float]:
     resp = client.embeddings.create(model=EMBEDDING_MODEL, input=text)
