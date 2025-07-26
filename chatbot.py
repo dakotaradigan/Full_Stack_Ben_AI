@@ -63,6 +63,7 @@ def search_benchmarks(
     query: str,
     top_k: int = 3,
     filters: Dict[str, Any] | None = None,
+    include_dividend: bool = False,
 ) -> List[Dict[str, Any]]:
     vec = embed(query)
 
@@ -84,27 +85,31 @@ def search_benchmarks(
     results = []
     for match in res.matches:
         bench = match.metadata
-        results.append({
+        item = {
             "name": bench["name"],
             "account_minimum": bench["account_minimum"],
-            "dividend_yield": bench.get("dividend_yield"),
             "score": match.score,
-        })
+        }
+        if include_dividend:
+            item["dividend_yield"] = bench.get("dividend_yield")
+        results.append(item)
     return results
 
 
-def get_minimum(name: str) -> Dict[str, Any]:
+def get_minimum(name: str, include_dividend: bool = False) -> Dict[str, Any]:
     bench = get_benchmark(name)
     if bench:
-        return {
+        result = {
             "name": bench["name"],
             "account_minimum": bench["account_minimum"],
-            "dividend_yield": bench.get("fundamentals", {}).get("dividend_yield"),
         }
+        if include_dividend:
+            result["dividend_yield"] = bench.get("fundamentals", {}).get("dividend_yield")
+        return result
     return {"error": f"Benchmark '{name}' not found"}
 
 
-def blend_minimum(allocations: List[Dict[str, Any]]) -> Dict[str, Any]:
+def blend_minimum(allocations: List[Dict[str, Any]], include_dividend: bool = False) -> Dict[str, Any]:
     total_weight = sum(a.get("weight", 0) for a in allocations)
     if abs(total_weight - 1.0) > 1e-6:
         return {"error": f"weights sum to {total_weight}"}
@@ -122,7 +127,7 @@ def blend_minimum(allocations: List[Dict[str, Any]]) -> Dict[str, Any]:
         else:
             weighted_yield += dy * a["weight"]
     result = {"blend_minimum": total}
-    if has_yield:
+    if include_dividend and has_yield:
         result["dividend_yield"] = weighted_yield
     return result
 
@@ -140,6 +145,11 @@ FUNCTIONS = [
                     "type": "object",
                     "description": "Optional metadata filters. Example: {\"pe_ratio\": {\"$gt\": 20}, \"region\": \"US\"}",
                 },
+                "include_dividend": {
+                    "type": "boolean",
+                    "default": False,
+                    "description": "Include dividend_yield in results",
+                },
             },
             "required": ["query"],
         },
@@ -149,7 +159,14 @@ FUNCTIONS = [
         "description": "Get minimum for a specific benchmark",
         "parameters": {
             "type": "object",
-            "properties": {"name": {"type": "string"}},
+            "properties": {
+                "name": {"type": "string"},
+                "include_dividend": {
+                    "type": "boolean",
+                    "default": False,
+                    "description": "Include dividend_yield in result",
+                },
+            },
             "required": ["name"],
         },
     },
@@ -169,7 +186,12 @@ FUNCTIONS = [
                         },
                         "required": ["name", "weight"],
                     },
-                }
+                },
+                "include_dividend": {
+                    "type": "boolean",
+                    "default": False,
+                    "description": "Include dividend_yield in result",
+                },
             },
             "required": ["allocations"],
         },
@@ -184,12 +206,19 @@ def call_function(name: str, arguments: Dict[str, Any]) -> Dict[str, Any]:
                 query=arguments.get("query", ""),
                 top_k=arguments.get("top_k", 3),
                 filters=arguments.get("filters"),
+                include_dividend=arguments.get("include_dividend", False),
             )
         }
     if name == "get_minimum":
-        return get_minimum(**arguments)
+        return get_minimum(
+            name=arguments.get("name", ""),
+            include_dividend=arguments.get("include_dividend", False),
+        )
     if name == "blend_minimum":
-        return blend_minimum(**arguments)
+        return blend_minimum(
+            allocations=arguments.get("allocations", []),
+            include_dividend=arguments.get("include_dividend", False),
+        )
     return {"error": f"Unknown function {name}"}
 
 
