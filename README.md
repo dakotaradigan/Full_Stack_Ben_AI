@@ -23,3 +23,13 @@ python chatbot.py
 by metadata fields (e.g. `{ "region": "US", "pe_ratio": {"$gt": 20} }`).
 
 Set the following environment variables before running either script: `PINECONE_API_KEY`, `PINECONE_ENV`, and `OPENAI_API_KEY`.
+
+## Web UI
+
+A simple Flask application provides a modern chat interface.
+Install additional dependencies and run the server:
+```bash
+pip install flask flask-session
+python app.py
+```
+Open your browser to `http://localhost:5000` to start chatting.
