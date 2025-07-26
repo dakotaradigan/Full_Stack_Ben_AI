@@ -69,7 +69,7 @@ def process_message(user_message: str) -> str:
         final = msg.content or ""
 
     resp_count += 1
-    if resp_count % 4 == 0:
+    if resp_count % chatbot.DISCLAIMER_FREQUENCY == 0:
         final = f"{final}\n\n{chatbot.DISCLAIMER_TEXT}"
 
     messages.append({"role": "assistant", "content": final})

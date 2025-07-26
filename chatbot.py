@@ -26,6 +26,9 @@ DISCLAIMER_TEXT = (
     "No investment advice or account approval authority."
 )
 
+# How often to append the disclaimer to assistant responses
+DISCLAIMER_FREQUENCY = 3
+
 PINECONE_API_KEY = os.getenv("PINECONE_API_KEY", "YOUR_PINECONE_API_KEY")
 PINECONE_ENV = os.getenv("PINECONE_ENV", "YOUR_PINECONE_ENV")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "YOUR_OPENAI_API_KEY")
@@ -262,14 +265,14 @@ def chat():
             )
             final = follow.choices[0].message.content
             resp_count += 1
-            if resp_count % 4 == 0:
+            if resp_count % DISCLAIMER_FREQUENCY == 0:
                 final = f"{final}\n\n{DISCLAIMER_TEXT}"
             messages.append({"role": "assistant", "content": final})
             print(f"\nAssistant: {final}")
         else:
             final = msg.content or ""
             resp_count += 1
-            if resp_count % 4 == 0:
+            if resp_count % DISCLAIMER_FREQUENCY == 0:
                 final = f"{final}\n\n{DISCLAIMER_TEXT}"
             messages.append({"role": "assistant", "content": final})
             print(f"\nAssistant: {final}")

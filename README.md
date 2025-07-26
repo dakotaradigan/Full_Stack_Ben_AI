@@ -24,6 +24,8 @@ by metadata fields (e.g. `{ "region": "US", "pe_ratio": {"$gt": 20} }`).
 
 Set the following environment variables before running either script: `PINECONE_API_KEY`, `PINECONE_ENV`, and `OPENAI_API_KEY`.
 
+Both the CLI and web chatbot append a disclaimer every **third** assistant response. The frequency can be changed by modifying `DISCLAIMER_FREQUENCY` in `chatbot.py`.
+
 ## Web UI
 
 A simple Flask application provides a modern chat interface.
