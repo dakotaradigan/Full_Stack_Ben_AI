@@ -138,7 +138,7 @@ def get_benchmark(name: str) -> Dict[str, Any] | None:
 
 def search_benchmarks(
     query: str,
-    top_k: int = 3,
+    top_k: int = 5,
     filters: Dict[str, Any] | None = None,
     include_dividend: bool = False,
 ) -> List[Dict[str, Any]]:
@@ -217,7 +217,7 @@ FUNCTIONS = [
             "type": "object",
             "properties": {
                 "query": {"type": "string"},
-                "top_k": {"type": "integer", "default": 3},
+                "top_k": {"type": "integer", "default": 5},
                 "filters": {
                     "type": "object",
                     "description": "Optional metadata filters. Example: {\"pe_ratio\": {\"$gt\": 20}, \"region\": \"US\"}",
@@ -281,7 +281,7 @@ def call_function(name: str, arguments: Dict[str, Any]) -> Dict[str, Any]:
         return {
             "results": search_benchmarks(
                 query=arguments.get("query", ""),
-                top_k=arguments.get("top_k", 3),
+                top_k=arguments.get("top_k", 5),
                 filters=arguments.get("filters"),
                 include_dividend=arguments.get("include_dividend", False),
             )
