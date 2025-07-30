@@ -209,6 +209,112 @@ def blend_minimum(allocations: List[Dict[str, Any]], include_dividend: bool = Fa
     return result
 
 
+def search_viable_alternatives(
+    query: str,
+    portfolio_size: float,
+    top_k: int = 5,
+    filters: Dict[str, Any] | None = None,
+    include_dividend: bool = False,
+    max_iterations: int = 3
+) -> List[Dict[str, Any]]:
+    """
+    Search for benchmark alternatives that meet portfolio size requirements.
+    Will iterate through search results to find viable options.
+    """
+    viable_results = []
+    current_k = top_k
+    iteration = 0
+    
+    while len(viable_results) < top_k and iteration < max_iterations:
+        # Search with increasing result count to find more options
+        search_results = search_benchmarks(
+            query=query,
+            top_k=current_k * 2,  # Get more results each iteration
+            filters=filters,
+            include_dividend=include_dividend
+        )
+        
+        # Filter results that meet portfolio size requirements
+        for result in search_results:
+            if result["account_minimum"] <= portfolio_size:
+                # Avoid duplicates
+                if not any(r["name"] == result["name"] for r in viable_results):
+                    viable_results.append(result)
+                    if len(viable_results) >= top_k:
+                        break
+        
+        iteration += 1
+        current_k += 5  # Increase search scope
+    
+    return viable_results[:top_k]
+
+
+def search_by_characteristics(
+    reference_benchmark: str,
+    portfolio_size: float | None = None,
+    top_k: int = 5,
+    include_dividend: bool = False
+) -> List[Dict[str, Any]]:
+    """
+    Search for benchmarks with similar characteristics to a reference benchmark.
+    Uses structured metadata matching rather than text similarity.
+    """
+    ref_bench = get_benchmark(reference_benchmark)
+    if not ref_bench:
+        return []
+    
+    ref_tags = ref_bench.get("tags", {})
+    ref_fundamentals = ref_bench.get("fundamentals", {})
+    
+    # Build filters based on reference benchmark characteristics
+    filters = {}
+    
+    # Match on key characteristics
+    if ref_tags.get("region"):
+        filters["region"] = {"$in": ref_tags["region"]}
+    
+    if ref_tags.get("asset_class"):
+        filters["asset_class"] = {"$in": ref_tags["asset_class"]}
+    
+    if ref_tags.get("esg") is not None:
+        filters["esg"] = {"$eq": ref_tags["esg"]}
+    
+    # Create a broad search query combining characteristics
+    query_parts = []
+    if ref_tags.get("region"):
+        query_parts.extend(ref_tags["region"])
+    if ref_tags.get("style"):
+        query_parts.extend(ref_tags["style"])
+    if ref_tags.get("factor_tilts"):
+        query_parts.extend(ref_tags["factor_tilts"])
+    if ref_tags.get("sector_focus"):
+        query_parts.extend(ref_tags["sector_focus"])
+    
+    query = " ".join(query_parts) if query_parts else reference_benchmark
+    
+    # Search with characteristics-based filters
+    if portfolio_size is not None:
+        results = search_viable_alternatives(
+            query=query,
+            portfolio_size=portfolio_size,
+            top_k=top_k,
+            filters=filters,
+            include_dividend=include_dividend
+        )
+    else:
+        results = search_benchmarks(
+            query=query,
+            top_k=top_k,
+            filters=filters,
+            include_dividend=include_dividend
+        )
+    
+    # Filter out the reference benchmark itself
+    results = [r for r in results if r["name"] != reference_benchmark]
+    
+    return results[:top_k]
+
+
 FUNCTIONS = [
     {
         "name": "search_benchmarks",
@@ -273,6 +379,46 @@ FUNCTIONS = [
             "required": ["allocations"],
         },
     },
+    {
+        "name": "search_viable_alternatives",
+        "description": "Search for benchmark alternatives that meet portfolio size requirements",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "query": {"type": "string"},
+                "portfolio_size": {"type": "number"},
+                "top_k": {"type": "integer", "default": 5},
+                "filters": {
+                    "type": "object",
+                    "description": "Optional metadata filters. Example: {\"pe_ratio\": {\"$gt\": 20}, \"region\": \"US\"}",
+                },
+                "include_dividend": {
+                    "type": "boolean",
+                    "default": False,
+                    "description": "Include dividend_yield in results",
+                },
+            },
+            "required": ["query", "portfolio_size"],
+        },
+    },
+    {
+        "name": "search_by_characteristics",
+        "description": "Search for benchmarks with similar characteristics to a reference benchmark",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "reference_benchmark": {"type": "string"},
+                "portfolio_size": {"type": "number"},
+                "top_k": {"type": "integer", "default": 5},
+                "include_dividend": {
+                    "type": "boolean",
+                    "default": False,
+                    "description": "Include dividend_yield in results",
+                },
+            },
+            "required": ["reference_benchmark"],
+        },
+    },
 ]
 
 
@@ -296,6 +442,25 @@ def call_function(name: str, arguments: Dict[str, Any]) -> Dict[str, Any]:
             allocations=arguments.get("allocations", []),
             include_dividend=arguments.get("include_dividend", False),
         )
+    if name == "search_viable_alternatives":
+        return {
+            "results": search_viable_alternatives(
+                query=arguments.get("query", ""),
+                portfolio_size=arguments.get("portfolio_size", 0.0),
+                top_k=arguments.get("top_k", 5),
+                filters=arguments.get("filters"),
+                include_dividend=arguments.get("include_dividend", False),
+            )
+        }
+    if name == "search_by_characteristics":
+        return {
+            "results": search_by_characteristics(
+                reference_benchmark=arguments.get("reference_benchmark", ""),
+                portfolio_size=arguments.get("portfolio_size", None),
+                top_k=arguments.get("top_k", 5),
+                include_dividend=arguments.get("include_dividend", False),
+            )
+        }
     return {"error": f"Unknown function {name}"}
 
 
