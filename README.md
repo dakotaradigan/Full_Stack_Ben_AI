@@ -19,8 +19,11 @@ After the index is built, start the chatbot:
 python chatbot.py
 ```
 
-`search_benchmarks` accepts an optional `filters` dictionary to narrow results
-by metadata fields (e.g. `{ "region": "US", "pe_ratio": {"$gt": 20} }`).
+`search_benchmarks` returns the most similar benchmarks to a query. The
+optional `top_k` argument controls how many matches are returned (default is
+**5**). Pass a larger value, such as `top_k=10`, for a broader search. It also
+accepts an optional `filters` dictionary to narrow results by metadata fields
+(e.g. `{ "region": "US", "pe_ratio": {"$gt": 20} }`).
 
 Set the following environment variables before running either script: `PINECONE_API_KEY`, `PINECONE_ENV`, and `OPENAI_API_KEY`.
 The scripts automatically retry failed requests to OpenAI and Pinecone so transient errors won't stop a run.
