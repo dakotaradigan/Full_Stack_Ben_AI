@@ -9,6 +9,8 @@ import time
 from pinecone import Pinecone
 from openai import OpenAI
 
+from description_utils import build_semantic_description
+
 # Load the large system prompt from an external file for readability
 with open("system_prompt.txt", "r", encoding="utf-8") as f:
     SYSTEM_PROMPT = f.read()
@@ -126,6 +128,9 @@ index = pc.Index(INDEX_NAME)
 with open("benchmarks.json", "r") as f:
     DATA = json.load(f)["benchmarks"]
 
+for bench in DATA:
+    bench["description"] = build_semantic_description(bench)
+
 # Build a mapping from lowercase benchmark name to the benchmark data for
 # constant-time lookup when retrieving a benchmark by name.
 BENCHMARK_MAP = {bench["name"].lower(): bench for bench in DATA}
@@ -165,6 +170,7 @@ def search_benchmarks(
         item = {
             "name": bench["name"],
             "account_minimum": bench["account_minimum"],
+            "description": bench.get("description"),
             "score": match.score,
         }
         if include_dividend:
@@ -179,6 +185,7 @@ def get_minimum(name: str, include_dividend: bool = False) -> Dict[str, Any]:
         result = {
             "name": bench["name"],
             "account_minimum": bench["account_minimum"],
+            "description": bench.get("description"),
         }
         if include_dividend:
             result["dividend_yield"] = bench.get("fundamentals", {}).get("dividend_yield")
