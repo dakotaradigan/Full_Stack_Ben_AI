@@ -262,9 +262,13 @@ def search_by_characteristics(
     top_k: int = 5,
     include_dividend: bool = False
 ) -> List[Dict[str, Any]]:
-    """
-    Search for benchmarks with similar characteristics to a reference benchmark.
-    Uses structured metadata matching rather than text similarity.
+    """Search for benchmarks with similar characteristics to a reference
+    benchmark.
+
+    The search matches on key tags such as region, asset class, style,
+    factor tilts, sector focus and ESG flag, using them both to construct
+    Pinecone metadata filters and to build a textual query. This relies on the
+    structured benchmark metadata rather than pure text similarity.
     """
     ref_bench = get_benchmark(reference_benchmark)
     if not ref_bench:
@@ -279,10 +283,19 @@ def search_by_characteristics(
     # Match on key characteristics
     if ref_tags.get("region"):
         filters["region"] = {"$in": ref_tags["region"]}
-    
+
     if ref_tags.get("asset_class"):
         filters["asset_class"] = {"$in": ref_tags["asset_class"]}
-    
+
+    if ref_tags.get("style"):
+        filters["style"] = {"$in": ref_tags["style"]}
+
+    if ref_tags.get("factor_tilts"):
+        filters["factor_tilts"] = {"$in": ref_tags["factor_tilts"]}
+
+    if ref_tags.get("sector_focus"):
+        filters["sector_focus"] = {"$in": ref_tags["sector_focus"]}
+
     if ref_tags.get("esg") is not None:
         filters["esg"] = {"$eq": ref_tags["esg"]}
     
