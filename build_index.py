@@ -46,7 +46,9 @@ def main() -> None:
 
     items = []
     for bench in data:
-        description = build_semantic_description(bench)
+        description = bench.get("description")
+        if not description:
+            description = build_semantic_description(bench)
         vec = embed(description)
 
         # Flatten the metadata to simple key-value pairs

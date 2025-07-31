@@ -129,7 +129,8 @@ with open("benchmarks.json", "r") as f:
     DATA = json.load(f)["benchmarks"]
 
 for bench in DATA:
-    bench["description"] = build_semantic_description(bench)
+    if "description" not in bench:
+        bench["description"] = build_semantic_description(bench)
 
 # Build a mapping from lowercase benchmark name to the benchmark data for
 # constant-time lookup when retrieving a benchmark by name.
