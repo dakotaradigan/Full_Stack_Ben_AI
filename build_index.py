@@ -2,6 +2,8 @@ import json
 import os
 from typing import List
 
+from description_utils import build_semantic_description
+
 from openai import OpenAI
 from pinecone import Pinecone, ServerlessSpec
 
@@ -44,7 +46,8 @@ def main() -> None:
 
     items = []
     for bench in data:
-        vec = embed(bench["name"])
+        description = build_semantic_description(bench)
+        vec = embed(description)
 
         # Flatten the metadata to simple key-value pairs
         metadata = {
@@ -64,6 +67,7 @@ def main() -> None:
             "rebalance_dates": ",".join(bench["fundamentals"]["rebalance_dates"]),
             "pe_ratio": bench["fundamentals"]["pe_ratio"],
             "dividend_yield": bench["fundamentals"].get("dividend_yield"),
+            "description": description,
         }
 
         items.append((bench["name"], vec, metadata))

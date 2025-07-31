@@ -11,6 +11,10 @@ Run the index builder once to load benchmark data (it will skip if the index alr
 ```bash
 python build_index.py
 ```
+The builder now generates a detailed natural language description for each
+benchmark using its structured tags and fundamentals. This description is
+embedded and stored alongside the metadata in Pinecone to improve retrieval
+quality.
 
 ## Chatbot Usage
 
