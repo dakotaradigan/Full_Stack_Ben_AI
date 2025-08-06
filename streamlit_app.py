@@ -224,9 +224,59 @@ st.markdown("""
     
     .message-bubble.assistant {
         background: white;
-        color: #2d2d2d;
+        color: #2d2d2d !important;
         border: 1px solid #f0f0f0;
         border-bottom-left-radius: 5px;
+    }
+    
+    /* Force consistent text colors within assistant messages */
+    .message-bubble.assistant * {
+        color: #2d2d2d !important;
+    }
+    
+    .message-bubble.assistant strong {
+        color: #2d2d2d !important;
+        font-weight: 600;
+    }
+    
+    .message-bubble.assistant b {
+        color: #2d2d2d !important;
+        font-weight: 600;
+    }
+    
+    /* Fix bullet point formatting */
+    .message-bubble.assistant ul {
+        margin: 0.5rem 0 !important;
+        padding-left: 1.2rem !important;
+    }
+    
+    .message-bubble.assistant li {
+        margin-bottom: 0.5rem !important;
+        line-height: 1.5 !important;
+        color: #2d2d2d !important;
+    }
+    
+    .message-bubble.assistant p {
+        margin-bottom: 0.8rem !important;
+        color: #2d2d2d !important;
+    }
+    
+    /* Override any Streamlit markdown defaults */
+    .message-bubble.assistant .stMarkdown {
+        color: #2d2d2d !important;
+    }
+    
+    .message-bubble.assistant .stMarkdown * {
+        color: #2d2d2d !important;
+    }
+    
+    /* Ensure no red or other colored text in assistant messages */
+    .message-bubble.assistant span {
+        color: #2d2d2d !important;
+    }
+    
+    .message-bubble.assistant div {
+        color: #2d2d2d !important;
     }
     
     .message-time {
@@ -463,10 +513,10 @@ class StreamlitChatWrapper:
             # Validate response security
             final_content = validate_response_security(final_content)
             
-            # Add disclaimer periodically
+            # Add disclaimer periodically (on 1st, 3rd, 5th, 7th... responses)
             st.session_state.response_count += 1
-            if st.session_state.response_count % DISCLAIMER_FREQUENCY == 0:
-                final_content = f"{final_content}\n\n{DISCLAIMER_TEXT}"
+            if st.session_state.response_count % 2 == 1:  # Show on odd response numbers
+                final_content = f"{final_content}\n\n\n<div style='font-size: 0.8em; font-style: italic; margin-top: 1em; padding: 0.5em; border-top: 1px solid #f0f0f0; color: #666;'>{DISCLAIMER_TEXT}</div>"
             
             return final_content
             
@@ -539,10 +589,48 @@ class StreamlitChatWrapper:
         role = "user" if is_user else "assistant"
         time_str = message.get("timestamp", datetime.now().strftime("%I:%M %p"))
         
+        # Process content to fix bullet point formatting
+        content = message["content"]
+        
+        if not is_user:  # Only process assistant messages
+            # Convert bullet points to proper HTML list format
+            import re
+            
+            # Check if content has bullet points (• or -)
+            if re.search(r'^[•\-]\s', content, re.MULTILINE):
+                # Split into lines and process bullets
+                lines = content.split('\n')
+                processed_lines = []
+                in_list = False
+                
+                for line in lines:
+                    line = line.strip()
+                    if re.match(r'^[•\-]\s', line):
+                        if not in_list:
+                            if processed_lines:  # Add closing tag for previous content
+                                processed_lines.append('')
+                            processed_lines.append('<ul>')
+                            in_list = True
+                        # Convert bullet to list item
+                        bullet_content = re.sub(r'^[•\-]\s', '', line)
+                        processed_lines.append(f'<li>{bullet_content}</li>')
+                    else:
+                        if in_list and line:  # Close list if we have content after bullets
+                            processed_lines.append('</ul>')
+                            processed_lines.append('')
+                            in_list = False
+                        if line:  # Only add non-empty lines
+                            processed_lines.append(line)
+                
+                if in_list:  # Close list if still open
+                    processed_lines.append('</ul>')
+                
+                content = '\n'.join(processed_lines)
+        
         st.markdown(f"""
         <div class="message {role}">
             <div class="message-bubble {role}">
-                {message["content"]}
+                {content}
                 <div class="message-time {role}">{time_str}</div>
             </div>
         </div>

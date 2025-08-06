@@ -799,6 +799,69 @@ def search_by_characteristics(
         logger.error(f"Search by characteristics failed for '{reference_benchmark}': {e}")
         return []
 
+def get_all_benchmarks(include_dividend: bool = False, filters: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+    """Get all benchmarks with optional filtering - returns concise summaries for efficiency."""
+    try:
+        logger.info("Retrieving all benchmarks from dataset")
+        
+        results = []
+        for bench in DATA:
+            # Apply filters if provided
+            if filters:
+                # Check region filter
+                if "region" in filters:
+                    region_filter = filters["region"]
+                    bench_regions = bench.get("tags", {}).get("region", [])
+                    if isinstance(region_filter, str):
+                        if region_filter not in bench_regions:
+                            continue
+                    elif isinstance(region_filter, list):
+                        if not any(r in bench_regions for r in region_filter):
+                            continue
+                
+                # Check asset_class filter
+                if "asset_class" in filters:
+                    ac_filter = filters["asset_class"]
+                    bench_ac = bench.get("tags", {}).get("asset_class", [])
+                    if isinstance(ac_filter, str):
+                        if ac_filter not in bench_ac:
+                            continue
+                    elif isinstance(ac_filter, list):
+                        if not any(ac in bench_ac for ac in ac_filter):
+                            continue
+                            
+                # Check portfolio_size filter (account_minimum)
+                if "max_minimum" in filters:
+                    if bench["account_minimum"] > filters["max_minimum"]:
+                        continue
+                        
+                # Check minimum threshold filter
+                if "min_minimum" in filters:
+                    if bench["account_minimum"] < filters["min_minimum"]:
+                        continue
+            
+            # Create concise result (not full description for efficiency)
+            result = {
+                "name": bench["name"],
+                "account_minimum": bench["account_minimum"],
+                "summary": f"{bench.get('tags', {}).get('region', ['Unknown'])[0]} {bench.get('tags', {}).get('asset_class', [''])[0]} - {bench.get('tags', {}).get('style', [''])[0] if bench.get('tags', {}).get('style') else 'Broad Market'}" + (f" with {bench.get('tags', {}).get('weighting_method', 'Market Cap')} weighting" if bench.get('tags', {}).get('weighting_method') else "")
+            }
+            
+            if include_dividend:
+                result["dividend_yield"] = bench.get("fundamentals", {}).get("dividend_yield")
+            
+            results.append(result)
+        
+        # Sort by account minimum for consistent ordering
+        results.sort(key=lambda x: x["account_minimum"])
+        
+        logger.info(f"Retrieved {len(results)} benchmarks from dataset")
+        return {"results": results, "total_count": len(results)}
+        
+    except Exception as e:
+        logger.error(f"Get all benchmarks failed: {e}")
+        return {"error": "Unable to retrieve benchmarks due to system error"}
+
 # Enhanced function definitions with better error handling
 FUNCTIONS = [
     {
@@ -883,6 +946,27 @@ FUNCTIONS = [
             "required": ["reference_benchmark"],
         },
     },
+    {
+        "name": "get_all_benchmarks",
+        "description": "Get all benchmarks with optional filtering - returns concise summaries for list requests",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "include_dividend": {"type": "boolean", "default": False},
+                "filters": {
+                    "type": "object",
+                    "description": "Optional filters. Example: {'region': 'US', 'asset_class': 'Equity', 'max_minimum': 300000}",
+                    "properties": {
+                        "region": {"type": "string", "description": "Filter by region (e.g., 'US', 'International')"},
+                        "asset_class": {"type": "string", "description": "Filter by asset class (e.g., 'Equity', 'Bond')"},
+                        "max_minimum": {"type": "number", "description": "Maximum account minimum to include"},
+                        "min_minimum": {"type": "number", "description": "Minimum account minimum to include"}
+                    }
+                }
+            },
+            "required": []
+        }
+    },
 ]
 
 def call_function(name: str, arguments: Dict[str, Any]) -> Dict[str, Any]:
@@ -933,6 +1017,11 @@ def call_function(name: str, arguments: Dict[str, Any]) -> Dict[str, Any]:
                     include_dividend=arguments.get("include_dividend", False),
                 )
             }
+        elif name == "get_all_benchmarks":
+            return get_all_benchmarks(
+                include_dividend=arguments.get("include_dividend", False),
+                filters=arguments.get("filters"),
+            )
         else:
             return {"error": f"Function {name} not implemented"}
             
@@ -1144,10 +1233,10 @@ def enhanced_chat():
                 # SECURITY: Validate response for prompt injection
                 final_content = validate_response_security(final_content)
                 
-                # Add disclaimer periodically
+                # Add disclaimer periodically (on 1st, 3rd, 5th, 7th... responses)
                 session.response_count += 1
-                if session.response_count % DISCLAIMER_FREQUENCY == 0:
-                    final_content = f"{final_content}\n\n{DISCLAIMER_TEXT}"
+                if session.response_count % 2 == 1:  # Show on odd response numbers
+                    final_content = f"{final_content}\n\n*{DISCLAIMER_TEXT}*"
                 
                 session.add_message("assistant", final_content)
                 print(f"\nAssistant: {final_content}")
