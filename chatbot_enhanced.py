@@ -1076,8 +1076,14 @@ def validate_response_security(response: str) -> str:
         'eligibility', 'requirement', 'alternative', 'client', 'advisor'
     ]
     
-    # Check if response contains expected financial terminology
+    # Add greeting keywords as legitimate financial assistant behavior
+    greeting_keywords = [
+        'hello', 'hi', 'hey', 'greetings', 'welcome', 'assist', 'help'
+    ]
+    
+    # Check if response contains expected financial terminology or appropriate greetings
     financial_keyword_count = sum(1 for keyword in financial_keywords if keyword in response_lower)
+    greeting_keyword_count = sum(1 for keyword in greeting_keywords if keyword in response_lower)
     
     # Check for professional tone indicators
     professional_indicators = [
@@ -1097,10 +1103,9 @@ def validate_response_security(response: str) -> str:
         r'as\s+(?:a|an|the)\s+\w+',      # "as a pirate/robot/etc"  
         r'roleplay|pretend|act\s+as',
         
-        # Response pattern changes
-        r'^(?:hello|hi|hey|greetings)',   # Unusual greetings for financial assistant
-        r'[!]{2,}',                       # Multiple exclamation marks
-        r'[?]{2,}',                       # Multiple question marks
+        # Response pattern changes - REMOVED greeting detection as legitimate for financial assistant
+        r'[!]{4,}',                       # Multiple exclamation marks (4+ instead of 2+)
+        r'[?]{4,}',                       # Multiple question marks (4+ instead of 2+)
         
         # Context breaking
         r'forget\s+about|ignore\s+the|instead\s+of',
@@ -1111,8 +1116,8 @@ def validate_response_security(response: str) -> str:
     
     # Decision logic: Likely prompt injection if:
     # 1. Contains injection indicators, OR
-    # 2. Lacks financial terminology AND lacks professional tone AND lacks structure
-    if injection_detected or (financial_keyword_count == 0 and professional_count == 0 and not has_structure):
+    # 2. Lacks financial terminology AND lacks professional tone AND lacks structure AND is not a greeting
+    if injection_detected or (financial_keyword_count == 0 and professional_count == 0 and not has_structure and greeting_keyword_count == 0):
         logger.warning("SECURITY: Response appears to deviate from benchmark eligibility function - possible prompt injection")
         return "I can only help with benchmark eligibility questions. Please ask about specific benchmarks, portfolio requirements, or alternatives."
     
