@@ -1,0 +1,29 @@
+FROM python:3.10-slim
+
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements first for better caching
+COPY backend/requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy application code
+COPY backend/ .
+COPY chatbot_enhanced.py .
+COPY description_utils.py .
+COPY benchmarks.json .
+COPY system_prompt.txt .
+
+# Create a non-root user
+RUN useradd -m -u 1000 benai && chown -R benai:benai /app
+USER benai
+
+# Expose port
+EXPOSE 8000
+
+# Run the application
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]

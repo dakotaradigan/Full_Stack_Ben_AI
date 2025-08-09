@@ -1,0 +1,72 @@
+# 🔒 SECURITY: API Keys & Environment Variables
+.env
+.env.local
+.env.*.local
+
+# Python Cache & Compiled Files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+
+# Virtual Environments  
+venv/
+env/
+ENV/
+.venv/
+
+# Logs & Runtime Data
+*.log
+server.log
+chatbot.log
+usage_report.json
+*.pid
+
+# Database & Data Files (if any)
+*.db
+*.sqlite
+*.sqlite3
+
+# OS Generated Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE & Editor Files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary Files
+*.tmp
+*.bak
+*.backup
+.temp/
+temp/
+
+# Node.js (if applicable)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Coverage & Testing
+.coverage
+.pytest_cache/
+.tox/
+htmlcov/
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# pyenv
+.python-version
