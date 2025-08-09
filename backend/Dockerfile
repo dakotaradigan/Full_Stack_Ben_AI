@@ -13,10 +13,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy application code
 COPY backend/ .
-COPY chatbot_enhanced.py .
-COPY description_utils.py .
-COPY benchmarks.json .
-COPY system_prompt.txt .
 
 # Create a non-root user
 RUN useradd -m -u 1000 benai && chown -R benai:benai /app

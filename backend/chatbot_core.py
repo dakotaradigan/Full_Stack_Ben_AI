@@ -16,7 +16,7 @@ from openai import OpenAI
 # Load environment variables from .env file
 try:
     from dotenv import load_dotenv
-    load_dotenv('../.env')  # Load .env file from parent directory
+    load_dotenv('../.env')  # Load .env file from project root
 except ImportError:
     pass  # Silently continue with system environment variables
 
@@ -1069,11 +1069,11 @@ def get_all_benchmarks(include_dividend: bool = False, filters: Optional[Dict[st
 FUNCTIONS = [
     {
         "name": "search_benchmarks",
-        "description": "Search for similar benchmarks in the dataset",
+        "description": "Semantic search for benchmarks using complex criteria and natural language queries. Use for multi-adjective queries like 'find good ESG technology benchmarks' or 'best international growth options'.",
         "parameters": {
             "type": "object",
             "properties": {
-                "query": {"type": "string"},
+                "query": {"type": "string", "description": "Natural language search query with complex criteria (e.g., 'sustainable technology benchmarks with good liquidity')"},
                 "top_k": {"type": "integer", "default": 5, "minimum": 1, "maximum": 10},
                 "filters": {
                     "type": "object",
@@ -1151,14 +1151,14 @@ FUNCTIONS = [
     },
     {
         "name": "get_all_benchmarks",
-        "description": "Get all benchmarks with optional filtering - returns concise summaries for list requests",
+        "description": "Retrieve comprehensive lists of benchmarks by exact category filtering. Use for enumeration queries like 'what factor benchmarks are available' or 'show me all ESG options'.",
         "parameters": {
             "type": "object",
             "properties": {
                 "include_dividend": {"type": "boolean", "default": False},
                 "filters": {
                     "type": "object",
-                    "description": "Optional filters. Example: {'region': 'US', 'asset_class': 'Equity', 'max_minimum': 300000}",
+                    "description": "Exact category filters for enumeration. Example: {'region': 'US', 'asset_class': 'Equity', 'max_minimum': 300000}",
                     "properties": {
                         "region": {"type": "string", "description": "Filter by region (e.g., 'US', 'International')"},
                         "asset_class": {"type": "string", "description": "Filter by asset class (e.g., 'Equity', 'Bond')"},

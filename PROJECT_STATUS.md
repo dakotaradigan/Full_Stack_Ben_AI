@@ -36,9 +36,6 @@ Chatbot_BenAI_Enhanced_UI/
 ├── docker/                    # Docker deployment
 │   ├── docker-compose.yml    # Container orchestration
 │   └── nginx.conf            # Web server config
-├── legacy/                    # Old/unused files
-│   ├── streamlit_app.py      # Original Streamlit version
-│   └── test_*.py             # Test files
 ├── .env                      # Your API keys (DO NOT COMMIT)
 ├── .env.example             # Template for API keys
 └── README_NEW_UI.md         # Documentation

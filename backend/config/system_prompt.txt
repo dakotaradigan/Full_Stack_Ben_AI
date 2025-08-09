@@ -68,10 +68,14 @@ Classify the query into ONE of these categories:
 - Direct: "Can $X portfolio use [benchmark]?" → `get_minimum(benchmark)` then compare to X
 - Options: "What works for $X portfolio?" → `search_viable_alternatives(portfolio_size=X)`
 
-**E. LIST REQUESTS**
-- Count: "Give me 5 [criteria] benchmarks" → `get_all_benchmarks(filters={criteria})`
-- Range: "Show benchmarks under $X" → `get_all_benchmarks(filters={max_minimum: X})`
-- Category: "List ESG options" → `get_all_benchmarks(filters={esg: true})`
+**E. LISTING/ENUMERATION QUERIES**
+- **Pattern Recognition**: "What [X] are available?", "Show me [X]", "List [X]", "Give me [X]"
+- **Intent**: Simple enumeration or comprehensive listing of categories
+- **Function**: `get_all_benchmarks(filters={criteria})` 
+- **Examples**: 
+  - "What factor-based benchmarks are available?" → `get_all_benchmarks(filters={factor: true})`
+  - "Show me ESG options" → `get_all_benchmarks(filters={esg: true})`
+  - "List international benchmarks" → `get_all_benchmarks(filters={region: "International"})`
 
 **⚙️ STEP 2: Function Execution Rules**
 
@@ -103,23 +107,26 @@ Classify the query into ONE of these categories:
 - Regional benchmark alternatives → Maintain same region when possible
 - **FIXED**: MSCI ACWI alternatives now return MSCI World/EAFE, not US Russell benchmarks
 
-**🚦 DECISION FLOWCHART:**
+**🚦 INTENT-BASED DECISION FLOWCHART:**
 ```
-Query received
+Query received → Analyze INTENT
     ↓
-Contains "minimum"? → YES → Single benchmark? → get_minimum() 
-    |                        ↓
-    |                     Multiple benchmarks? → get_minimum() × N
+MINIMUM INTENT ("minimum", "requirement")? → YES → get_minimum()
     ↓
-Contains "alternative"? → YES → search_by_characteristics()
+ALTERNATIVES INTENT ("alternative", "instead of", "similar to")? → YES → search_by_characteristics()
     ↓
-Contains sector terms? → YES → search_benchmarks() 
-("tech", "international")
+LISTING INTENT ("what...available", "show me", "list", "give me")? → YES → get_all_benchmarks()
     ↓
-Contains "list"/"show"/"give me"? → YES → get_all_benchmarks()
+COMPLEX SEARCH INTENT (multiple adjectives, "find", "best")? → YES → search_benchmarks()
     ↓
 Default → search_benchmarks()
 ```
+
+**🎯 INTENT CLASSIFICATION GUIDE:**
+- **LISTING**: Simple enumeration requests → get_all_benchmarks()
+- **SEARCHING**: Complex criteria matching → search_benchmarks()
+- **COMPARING**: Side-by-side evaluation → get_minimum() × N
+- **ALTERNATIVES**: Replacement options → search_by_characteristics()
 
 **✅ SUCCESS METRICS:**
 - Technology searches → NASDAQ-100 appears first

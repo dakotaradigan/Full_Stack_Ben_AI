@@ -164,7 +164,7 @@ async def chat(message: ChatMessage):
                 messages=messages,
                 functions=FUNCTIONS,
                 function_call="auto",
-                temperature=0.7,
+                temperature=0.1,
                 max_tokens=min(MAX_TOKENS_PER_REQUEST, 2000)
             )
             
@@ -241,7 +241,7 @@ async def chat(message: ChatMessage):
                         messages=messages,
                         functions=FUNCTIONS,
                         function_call="auto",
-                        temperature=0.7,
+                        temperature=0.1,
                         max_tokens=min(MAX_TOKENS_PER_REQUEST, 2000)
                     )
                     current_response = next_completion.choices[0].message

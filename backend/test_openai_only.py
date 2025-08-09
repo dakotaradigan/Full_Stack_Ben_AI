@@ -8,7 +8,7 @@ print("Testing OpenAI client initialization...")
 # Load environment
 try:
     from dotenv import load_dotenv
-    load_dotenv('../.env')
+    load_dotenv('.env')
     print("✓ Environment loaded")
 except Exception as e:
     print(f"✗ Environment loading failed: {e}")
