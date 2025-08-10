@@ -84,7 +84,7 @@ class ChatSession:
             self.interaction_count += 1
     
     def should_show_disclaimer(self):
-        return self.interaction_count % DISCLAIMER_FREQUENCY == 0 and self.interaction_count > 0
+        return self.interaction_count % 2 == 1
     
     def get_trimmed_history(self):
         # Create a copy of messages to avoid modifying the original
@@ -152,10 +152,11 @@ async def chat(message: ChatMessage):
         messages = [{"role": "system", "content": SYSTEM_PROMPT}]
         messages.extend(session.get_trimmed_history())
         
-        # Add disclaimer if needed
+        # Check disclaimer AFTER incrementing for assistant message (preview what it will be)
+        preview_count = session.interaction_count + 1
         disclaimer = ""
-        if session.should_show_disclaimer():
-            disclaimer = f"\n\n*{DISCLAIMER_TEXT}*"
+        if preview_count % 2 == 1:
+            disclaimer = f"\n\n{DISCLAIMER_TEXT}"
         
         # Get AI response
         try:
@@ -310,18 +311,18 @@ async def get_suggestions():
                 "query": "Show me ESG-focused benchmark options"
             },
             {
-                "title": "Small-cap alternatives",
-                "query": "What are the best small-cap benchmarks?"
+                "title": "Small-cap benchmarks",
+                "query": "What small-cap benchmarks are available?"
             }
         ],
-        "portfolio_analysis": [
+        "use_cases": [
             {
                 "title": "Check portfolio eligibility",
                 "query": "Can a $250,000 portfolio use Russell 2000?"
             },
             {
-                "title": "Find alternatives for small portfolio",
-                "query": "What benchmarks work for a $100,000 portfolio?"
+                "title": "Find benchmarks for $250K",
+                "query": "What benchmarks work for a $250,000 portfolio?"
             },
             {
                 "title": "Compare minimums",
@@ -338,8 +339,8 @@ async def get_suggestions():
                 "query": "What factor-based benchmarks are available?"
             },
             {
-                "title": "Technology sector",
-                "query": "Find technology-focused benchmarks"
+                "title": "Technology benchmarks",
+                "query": "What technology benchmarks are available?"
             }
         ]
     }

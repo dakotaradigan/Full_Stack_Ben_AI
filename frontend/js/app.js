@@ -120,7 +120,7 @@ class BenAIApp {
             
             // Populate suggestion sections
             this.populateSuggestionSection('gettingStartedSuggestions', suggestions.getting_started);
-            this.populateSuggestionSection('portfolioSuggestions', suggestions.portfolio_analysis);
+            this.populateSuggestionSection('portfolioSuggestions', suggestions.use_cases);
             this.populateSuggestionSection('benchmarkSuggestions', suggestions.benchmark_search);
         } catch (error) {
             console.error('Failed to load suggestions:', error);

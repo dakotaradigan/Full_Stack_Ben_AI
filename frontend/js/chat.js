@@ -94,7 +94,9 @@ class ChatManager {
         bubbleDiv.className = 'message-bubble';
         
         // Process content (handle markdown, code blocks, etc.)
-        bubbleDiv.innerHTML = this.processMessageContent(content);
+        let processedContent = this.processMessageContent(content);
+        
+        bubbleDiv.innerHTML = processedContent;
         
         // Add timestamp
         const timeDiv = document.createElement('div');
@@ -161,6 +163,7 @@ class ChatManager {
             /\$[\d,]+(?:\.\d{2})?/g,
             '<span class="amount">$&</span>'
         );
+        
         
         return processed;
     }

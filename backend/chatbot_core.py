@@ -61,8 +61,7 @@ match = re.search(
 DISCLAIMER_TEXT = (
     match.group(1).strip()
     if match
-    else "This assistant provides benchmark eligibility guidance only. "
-    "No investment advice or account approval authority."
+    else "***This assistant provides benchmark eligibility guidance only. No investment advice or account approval authority. Ben gets things wrong too so check with your sales rep if you have questions. Also use our on-demand transition analysis tool for further analysis.***"
 )
 
 DISCLAIMER_FREQUENCY = 3
@@ -988,6 +987,108 @@ def search_by_characteristics(
         logger.error(f"Search by characteristics failed for '{reference_benchmark}': {e}")
         return []
 
+def search_by_characteristics_tiered(
+    reference_benchmark: str,
+    portfolio_size: float,
+    top_k: int = 5,
+    include_dividend: bool = False
+) -> Dict[str, Any]:
+    """
+    Search for alternatives with tiered presentation: primary alternatives that meet 
+    portfolio requirements, plus other alternatives in the same asset class.
+    
+    Returns structured response with primary_alternatives and other_alternatives.
+    """
+    try:
+        logger.info(f"Tiered search for '{reference_benchmark}' with portfolio_size=${portfolio_size:,}")
+        
+        if portfolio_size <= 0:
+            return {"primary_alternatives": [], "other_alternatives": []}
+        
+        ref_bench = get_benchmark(reference_benchmark)
+        if not ref_bench:
+            logger.warning(f"Reference benchmark '{reference_benchmark}' not found")
+            return {"primary_alternatives": [], "other_alternatives": []}
+        
+        ref_tags = ref_bench.get("tags", {})
+        
+        # Build filters based on reference benchmark characteristics
+        filters = {}
+        if ref_tags.get("region"):
+            filters["region"] = {"$in": ref_tags["region"]}
+        if ref_tags.get("asset_class"):
+            filters["asset_class"] = {"$in": ref_tags["asset_class"]}
+        if ref_tags.get("style"):
+            filters["style"] = {"$in": ref_tags["style"]}
+        if ref_tags.get("esg") is not None:
+            filters["esg"] = {"$eq": ref_tags["esg"]}
+        
+        # Create search query
+        query_parts = []
+        for key in ["region", "style", "factor_tilts", "sector_focus"]:
+            if ref_tags.get(key):
+                query_parts.extend(ref_tags[key])
+        query = " ".join(query_parts) if query_parts else reference_benchmark
+        
+        # Get ALL potential alternatives (without portfolio filtering)
+        all_results = search_benchmarks(
+            query=query,
+            top_k=15,  # Get more results to have options for both tiers
+            filters=filters,
+            include_dividend=include_dividend
+        )
+        
+        # Remove the reference benchmark itself
+        all_results = [r for r in all_results if r["name"] != reference_benchmark]
+        
+        # Separate into primary and other alternatives
+        primary_alternatives = []
+        other_alternatives = []
+        
+        for result in all_results:
+            account_minimum = result.get("account_minimum", 0)
+            if account_minimum <= portfolio_size:
+                primary_alternatives.append(result)
+            else:
+                other_alternatives.append(result)
+        
+        # Sort other alternatives by account minimum (lower minimums first)
+        other_alternatives.sort(key=lambda x: x.get("account_minimum", 0))
+        
+        # Limit results per tier
+        primary_alternatives = primary_alternatives[:top_k]
+        other_alternatives = other_alternatives[:3]  # Limit other suggestions
+        
+        # Fallback logic if no primary alternatives found
+        if not primary_alternatives:
+            logger.info(f"No primary alternatives found, trying fallback searches for {reference_benchmark}")
+            
+            # Try broader searches for primary options
+            if ref_tags.get("region"):
+                region_filters = {"region": {"$in": ref_tags["region"]}}
+                fallback_results = search_viable_alternatives(
+                    query=query,
+                    portfolio_size=portfolio_size,
+                    top_k=top_k,
+                    filters=region_filters,
+                    include_dividend=include_dividend
+                )
+                fallback_results = [r for r in fallback_results if r["name"] != reference_benchmark]
+                primary_alternatives.extend(fallback_results)
+        
+        logger.info(f"Tiered results: {len(primary_alternatives)} primary, {len(other_alternatives)} other alternatives")
+        
+        return {
+            "primary_alternatives": primary_alternatives,
+            "other_alternatives": other_alternatives,
+            "portfolio_size": portfolio_size,
+            "reference_benchmark": reference_benchmark
+        }
+        
+    except Exception as e:
+        logger.error(f"Tiered search failed for '{reference_benchmark}': {e}")
+        return {"primary_alternatives": [], "other_alternatives": []}
+
 def get_all_benchmarks(include_dividend: bool = False, filters: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
     """Get all benchmarks with optional filtering - returns concise summaries for efficiency."""
     try:
@@ -1136,17 +1237,17 @@ FUNCTIONS = [
         },
     },
     {
-        "name": "search_by_characteristics",
-        "description": "Search for benchmarks with similar characteristics to a reference benchmark",
+        "name": "search_by_characteristics_tiered",
+        "description": "Search for alternatives with tiered presentation: primary alternatives that meet portfolio requirements, plus other alternatives in the same asset class. Use when portfolio_size is specified and user wants alternatives to a specific benchmark.",
         "parameters": {
             "type": "object",
             "properties": {
-                "reference_benchmark": {"type": "string"},
-                "portfolio_size": {"type": "number", "minimum": 0},
-                "top_k": {"type": "integer", "default": 5, "minimum": 1, "maximum": 10},
-                "include_dividend": {"type": "boolean", "default": False},
+                "reference_benchmark": {"type": "string", "description": "Name of the benchmark to find alternatives for"},
+                "portfolio_size": {"type": "number", "minimum": 1, "description": "Portfolio size in dollars to determine alternative tiers"},
+                "top_k": {"type": "integer", "default": 5, "minimum": 1, "maximum": 10, "description": "Number of primary alternatives to return"},
+                "include_dividend": {"type": "boolean", "default": False, "description": "Include dividend-focused benchmarks"},
             },
-            "required": ["reference_benchmark"],
+            "required": ["reference_benchmark", "portfolio_size"],
         },
     },
     {
@@ -1220,6 +1321,13 @@ def call_function(name: str, arguments: Dict[str, Any]) -> Dict[str, Any]:
                     include_dividend=arguments.get("include_dividend", False),
                 )
             }
+        elif name == "search_by_characteristics_tiered":
+            return search_by_characteristics_tiered(
+                reference_benchmark=arguments.get("reference_benchmark", ""),
+                portfolio_size=arguments.get("portfolio_size", 0.0),
+                top_k=min(arguments.get("top_k", 5), 10),
+                include_dividend=arguments.get("include_dividend", False),
+            )
         elif name == "get_all_benchmarks":
             return get_all_benchmarks(
                 include_dividend=arguments.get("include_dividend", False),
@@ -1304,6 +1412,13 @@ def validate_response_security(response: str, function_calls_successful: bool = 
         'hello', 'hi', 'hey', 'greetings', 'welcome', 'assist', 'help'
     ]
     
+    # Legitimate advisory terms when used in benchmark context
+    legitimate_advisory_terms = [
+        'best.*benchmark', 'find.*benchmark', 'good.*benchmark',
+        'top.*benchmark', 'suitable.*benchmark', 'optimal.*benchmark',
+        'recommended.*benchmark', 'preferred.*benchmark'
+    ]
+    
     # Check if response contains expected financial terminology or appropriate greetings
     financial_keyword_count = sum(1 for keyword in financial_keywords if keyword in response_lower)
     greeting_keyword_count = sum(1 for keyword in greeting_keywords if keyword in response_lower)
@@ -1355,14 +1470,21 @@ def validate_response_security(response: str, function_calls_successful: bool = 
         logger.info(f"SECURITY: Multi-benchmark response detected - allowing (benchmarks: {benchmark_count})")
         return response
     
+    # Check if query contains legitimate advisory terms in benchmark context
+    has_legitimate_advisory = any(re.search(pattern, response_lower) for pattern in legitimate_advisory_terms)
+    
     # Decision logic with function call bypass:
     if function_calls_successful:
-        # If function calls were successful, only block obvious injection patterns
-        if injection_detected:
+        # Strong bypass: If function calls successful + response contains benchmarks → Always allow
+        if financial_keyword_count >= 1:
+            logger.info(f"SECURITY: Function calls successful with financial content ({financial_keyword_count} keywords) - allowing")
+            return response
+        # If function calls were successful, only block obvious injection patterns (not advisory language)
+        elif injection_detected and not has_legitimate_advisory:
             logger.warning("SECURITY: Function calls successful but injection patterns detected - blocking")
             return "I can only help with benchmark eligibility questions. Please ask about specific benchmarks, portfolio requirements, or alternatives."
         else:
-            logger.info("SECURITY: Function calls successful and no injection patterns - allowing response")
+            logger.info("SECURITY: Function calls successful and no harmful injection patterns - allowing response")
             return response
     else:
         # Standard validation for responses without function calls
