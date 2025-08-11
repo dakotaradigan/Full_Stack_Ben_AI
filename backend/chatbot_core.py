@@ -1612,10 +1612,7 @@ def enhanced_chat():
                 # SECURITY: Validate response for prompt injection
                 final_content = validate_response_security(final_content)
                 
-                # Add disclaimer periodically (on 1st, 3rd, 5th, 7th... responses)
-                session.response_count += 1
-                if session.response_count % 2 == 1:  # Show on odd response numbers
-                    final_content = f"{final_content}\n\n*{DISCLAIMER_TEXT}*"
+                # Note: Disclaimer handled by API layer (app.py)
                 
                 session.add_message("assistant", final_content)
                 print(f"\nAssistant: {final_content}")
