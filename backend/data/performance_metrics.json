@@ -1,0 +1,150 @@
+{
+  "baselines": {
+    "json_file_load": {
+      "average_ms": 0.95,
+      "min_ms": 0.75,
+      "max_ms": 1.27,
+      "sample_size": 5
+    },
+    "benchmark_fuzzy_matching": {
+      "average_ms": 0.03,
+      "min_ms": 0.02,
+      "max_ms": 0.03,
+      "sample_size": 5
+    },
+    "system_prompt_load": {
+      "average_ms": 0.41,
+      "min_ms": 0.34,
+      "max_ms": 0.51,
+      "sample_size": 5
+    },
+    "description_generation": {
+      "average_ms": 0.11,
+      "min_ms": 0.04,
+      "max_ms": 0.37,
+      "sample_size": 5
+    }
+  },
+  "measurements": [
+    {
+      "timestamp": "2025-08-23T20:44:56.916595",
+      "operation": "json_file_load",
+      "duration_ms": 1.27,
+      "success": true
+    },
+    {
+      "timestamp": "2025-08-23T20:44:57.121836",
+      "operation": "benchmark_fuzzy_matching",
+      "duration_ms": 0.03,
+      "success": true
+    },
+    {
+      "timestamp": "2025-08-23T20:44:57.327726",
+      "operation": "system_prompt_load",
+      "duration_ms": 0.51,
+      "success": true
+    },
+    {
+      "timestamp": "2025-08-23T20:44:57.533911",
+      "operation": "description_generation",
+      "duration_ms": 0.37,
+      "success": true
+    },
+    {
+      "timestamp": "2025-08-23T20:44:57.739979",
+      "operation": "json_file_load",
+      "duration_ms": 0.75,
+      "success": true
+    },
+    {
+      "timestamp": "2025-08-23T20:44:57.943666",
+      "operation": "benchmark_fuzzy_matching",
+      "duration_ms": 0.03,
+      "success": true
+    },
+    {
+      "timestamp": "2025-08-23T20:44:58.146359",
+      "operation": "system_prompt_load",
+      "duration_ms": 0.36,
+      "success": true
+    },
+    {
+      "timestamp": "2025-08-23T20:44:58.350961",
+      "operation": "description_generation",
+      "duration_ms": 0.04,
+      "success": true
+    },
+    {
+      "timestamp": "2025-08-23T20:44:58.557369",
+      "operation": "json_file_load",
+      "duration_ms": 0.78,
+      "success": true
+    },
+    {
+      "timestamp": "2025-08-23T20:44:58.760333",
+      "operation": "benchmark_fuzzy_matching",
+      "duration_ms": 0.02,
+      "success": true
+    },
+    {
+      "timestamp": "2025-08-23T20:44:58.965853",
+      "operation": "system_prompt_load",
+      "duration_ms": 0.34,
+      "success": true
+    },
+    {
+      "timestamp": "2025-08-23T20:44:59.171347",
+      "operation": "description_generation",
+      "duration_ms": 0.05,
+      "success": true
+    },
+    {
+      "timestamp": "2025-08-23T20:44:59.378239",
+      "operation": "json_file_load",
+      "duration_ms": 0.75,
+      "success": true
+    },
+    {
+      "timestamp": "2025-08-23T20:44:59.584446",
+      "operation": "benchmark_fuzzy_matching",
+      "duration_ms": 0.02,
+      "success": true
+    },
+    {
+      "timestamp": "2025-08-23T20:44:59.789203",
+      "operation": "system_prompt_load",
+      "duration_ms": 0.48,
+      "success": true
+    },
+    {
+      "timestamp": "2025-08-23T20:44:59.995366",
+      "operation": "description_generation",
+      "duration_ms": 0.06,
+      "success": true
+    },
+    {
+      "timestamp": "2025-08-23T20:45:00.202445",
+      "operation": "json_file_load",
+      "duration_ms": 1.2,
+      "success": true
+    },
+    {
+      "timestamp": "2025-08-23T20:45:00.408614",
+      "operation": "benchmark_fuzzy_matching",
+      "duration_ms": 0.03,
+      "success": true
+    },
+    {
+      "timestamp": "2025-08-23T20:45:00.610665",
+      "operation": "system_prompt_load",
+      "duration_ms": 0.36,
+      "success": true
+    },
+    {
+      "timestamp": "2025-08-23T20:45:00.813013",
+      "operation": "description_generation",
+      "duration_ms": 0.05,
+      "success": true
+    }
+  ]
+}

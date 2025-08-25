@@ -14,7 +14,7 @@ if lsof -Pi :8000 -sTCP:LISTEN -t >/dev/null ; then
 fi
 
 # Navigate to backend directory
-cd "$(dirname "$0")/backend" || exit
+cd "$(dirname "$0")/../backend" || exit
 
 # Start the backend server
 echo "🔧 Starting backend server..."
